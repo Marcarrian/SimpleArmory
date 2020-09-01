@@ -1,0 +1,114 @@
+<!--<!doctype html>-->
+<!--<html class="no-js">-->
+<!--<head>-->
+<!--  <meta charset="utf-8">-->
+<!--  <title>Simple Armory</title>-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--  <meta name="description" content="Simplified armory site for World of Warcraft">-->
+<!--  <meta name="author" content="Kevin Clement">   &lt;!&ndash; Place favicon.ico and apple-touch-icon.png in the root directory &ndash;&gt;-->
+<!--  &lt;!&ndash; build:css(.) styles/vendor.css &ndash;&gt;-->
+<!--  &lt;!&ndash; build:css(.tmp) styles/styles.scss &ndash;&gt;-->
+<!--  <link rel="stylesheet" href="styles.scss">-->
+<!--  &lt;!&ndash; endbuild &ndash;&gt;-->
+<!--</head>-->
+<!--&lt;!&ndash;[if lt IE 7]>-->
+<!--<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>-->
+<!--<![endif]&ndash;&gt;-->
+
+<!--&lt;!&ndash; Main Site &ndash;&gt;-->
+<!--<div id="navbar" ng-controller="HeaderCtrl">-->
+<!--  <div ng-include src="'views/header.html'"></div>-->
+<!--</div>-->
+
+<!--<div class="view-container">-->
+<!--  <div ng-view class="view-frame"></div>-->
+<!--</div>-->
+
+<!--<div class="bug-footer">-->
+<!--  <a href="https://github.com/kevinclement/SimpleArmory/issues">Report a-->
+<!--    bug, a missing mount/pet/toy/...</a>-->
+<!--</div>-->
+<!--<div class="container footer">For another site designed by kevin and a killer experience in Olympia, WA try <a href="//exitpuzzles.com">exitpuzzles.com</a>.</div>-->
+
+<!--&lt;!&ndash; Google Analytics &ndash;&gt;-->
+<!--<script>-->
+<!--  (function (i, s, o, g, r, a, m) {-->
+<!--    i['GoogleAnalyticsObject'] = r;-->
+<!--    i[r] = i[r] || function () {-->
+<!--      (i[r].q = i[r].q || []).push(arguments)-->
+<!--    }, i[r].l = 1 * new Date();-->
+<!--    a = s.createElement(o),-->
+<!--        m = s.getElementsByTagName(o)[0];-->
+<!--    a.async = 1;-->
+<!--    a.src = g;-->
+<!--    m.parentNode.insertBefore(a, m)-->
+<!--  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');-->
+
+<!--  ga('create', 'UA-40763505-1', 'simplearmory.com');-->
+<!--  ga('send', 'pageview');-->
+<!--</script>-->
+
+<!--&lt;!&ndash; build:js(.) scripts/oldieshim.js &ndash;&gt;-->
+<!--&lt;!&ndash;[if lt IE 9]>-->
+<!--<script src="../../bower_components/es5-shim/es5-shim.js"></script>-->
+<!--<script src="../../bower_components/json3/lib/json3.js"></script>-->
+<!--<![endif]&ndash;&gt;-->
+<!--&lt;!&ndash; endbuild &ndash;&gt;-->
+
+<!--&lt;!&ndash; build:js(.) scripts/vendor.js &ndash;&gt;-->
+<!--&lt;!&ndash; bower:js &ndash;&gt;-->
+<!--<script src="../../bower_components/jquery/dist/jquery.js"></script>-->
+<!--<script src="../../bower_components/angular/angular.js"></script>-->
+<!--<script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>-->
+<!--<script src="../../bower_components/angular-route/angular-route.js"></script>-->
+<!--<script src="../../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>-->
+<!--<script src="../../bower_components/angular-ui-select/dist/select.js"></script>-->
+<!--<script src="../../bower_components/angular-sanitize/angular-sanitize.js"></script>-->
+<!--&lt;!&ndash; endbower &ndash;&gt;-->
+<!--&lt;!&ndash; endbuild &ndash;&gt;-->
+
+<!--&lt;!&ndash; build:js({.tmp,app}) scripts/scripts.js &ndash;&gt;-->
+<!--<script src="scripts/polyfill.ts"></script>-->
+<!--<script src="scripts/app.ts"></script>-->
+
+<!--<script src="app/achievements/achievements.controller.ts"></script>-->
+<!--<script src="app/application/application.component.ts"></script>-->
+<!--<script src="app/battlepets/battlepets.component.ts"></script>-->
+<!--<script src="app/calendar/calendar.component.ts"></script>-->
+<!--<script src="app/companions/companions.component.ts"></script>-->
+<!--<script src="app/error/error.component.ts"></script>-->
+<!--<script src="app/header/header.component.ts"></script>-->
+<!--<script src="app/login/login.component.ts"></script>-->
+<!--<script src="app/mounts/mounts.component.ts"></script>-->
+<!--<script src="app/overview/overview.component.ts"></script>-->
+<!--<script src="app/reputation/reputation.component.ts"></script>-->
+<!--<script src="app/settings/settings.component.ts"></script>-->
+<!--<script src="scripts/controllers/toys.controller.ts"></script>-->
+
+<!--<script src="scripts/services/login.service.ts"></script>-->
+<!--<script src="app/admin/admin.service.ts"></script>-->
+<!--<script src="app/achievements/achievements.service.ts"></script>-->
+<!--<script src="app/blizzard/blizzard-realm.service.ts"></script>-->
+<!--<script src="mounts/mountsAndPets.service.ts"></script>-->
+<!--<script src="app/toys/toys.service.ts"></script>-->
+<!--<script src="app/konami/konami.service.ts"></script>-->
+<!--<script src="app/keyboard/keyboard.service.ts"></script>-->
+<!--<script src="app/planner/planner.service.ts"></script>-->
+<!--<script src="app/blizzard/factions.service.ts"></script>-->
+<!--<script src="app/settings/settings.service.ts"></script>-->
+
+<!--<script src="scripts/filters/filters.ts"></script>-->
+<!--<script src="app/directives/foo.directive.ts"></script>-->
+<!--<script src="app/reputation/row/reputation-row.component.ts"></script>-->
+<!--&lt;!&ndash; endbuild &ndash;&gt;-->
+
+<!--&lt;!&ndash; build:DEV_ONLY &ndash;&gt;-->
+<!--<script src="app/directives/drag.directive.ts"></script>-->
+<!--<script src="app/admin/admin.component.ts"></script>-->
+<!--<script src="app/admin/categories/admin-categories.component.ts"></script>-->
+<!--<script src="app/admin/mounts/admin.mounts.compoennt.ts"></script>-->
+<!--<script src="scripts/controllers/admin.missing.controller.ts"></script>-->
+<!--&lt;!&ndash; endbuild &ndash;&gt;-->
+<!--<script type="text/javascript" src="//static.wowhead.com/widgets/power.js"></script>-->
+<!--</body>-->
+<!--</html>-->
