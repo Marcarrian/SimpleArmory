@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-companions',
-  templateUrl: './companions.component.ts',
+  templateUrl: './companions.component.html',
   styleUrls: ['./companions.component.scss'],
 })
 export class CompanionsComponent {

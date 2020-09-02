@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-reputation',
-  templateUrl: './reputation.component.ts',
+  templateUrl: './reputation.component.html',
   styleUrls: ['./reputation.component.scss'],
 })
 export class ReputationComponent {

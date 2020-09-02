@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-admin-missing',
-  templateUrl: './admin-missing.component.ts',
+  templateUrl: './admin-missing.component.html',
   styleUrls: ['./admin-missing.scss'],
 })
 export class AdminMissingComponent {

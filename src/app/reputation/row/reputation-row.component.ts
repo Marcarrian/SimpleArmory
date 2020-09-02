@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-reputation-row',
-  templateUrl: './mounts.component.ts',
-  styleUrls: ['./mounts.component.scss'],
+  templateUrl: './reputation-row.component.html',
+  styleUrls: ['./reputation-row.component.scss'],
 })
 export class ReputationRowComponent {
 
@@ -36,7 +36,8 @@ export class ReputationRowComponent {
 
       // pulls out the faction level percentage from the scope
       // applies that percentage to the possible fixed width for the div
-      return (num / 100) * levelWidths[level] + 'px';
+      // return (num / 100) * levelWidths[level] + 'px'; FIXME
+      return num;
     };
 
     $scope.shouldShow = function (show) {

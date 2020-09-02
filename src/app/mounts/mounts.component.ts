@@ -3,7 +3,7 @@ import { MountsService } from './mounts.service';
 
 @Component({
   selector: 'app-mounts',
-  templateUrl: './mounts.component.ts',
+  templateUrl: './mounts.component.html',
   styleUrls: ['./mounts.component.scss'],
 })
 export class MountsComponent {

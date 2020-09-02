@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-battlepets',
-  templateUrl: './battlepets.component.ts',
+  templateUrl: './battlepets.component.html',
   styleUrls: ['./battlepets.component.scss'],
 })
 export class BattlepetsComponent {

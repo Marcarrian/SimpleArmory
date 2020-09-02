@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { ErrorComponent } from './error/error.component';
 import { SettingsComponent } from './settings/settings.component';
-import { AchievementsComponent } from './achievements/achievements.controller';
+import { AchievementsComponent } from './achievements/achievements.component';
 import { BattlepetsComponent } from './battlepets/battlepets.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CompanionsComponent } from './companions/companions.component';

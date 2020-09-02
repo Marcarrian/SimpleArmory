@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "simple-armory": {
+    "simplearmory": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/simple-armory",
+            "outputPath": "dist/simplearmory",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -66,18 +66,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "simple-armory:build"
+            "browserTarget": "simplearmory:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "simple-armory:build:production"
+              "browserTarget": "simplearmory:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "simple-armory:build"
+            "browserTarget": "simplearmory:build"
           }
         },
         "test": {
@@ -114,15 +114,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "simple-armory:serve"
+            "devServerTarget": "simplearmory:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "simple-armory:serve:production"
+              "devServerTarget": "simplearmory:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "simple-armory"
+  "defaultProject": "simplearmory"
 }

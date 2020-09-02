@@ -4,9 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UpgradeModule } from '@angular/upgrade/static';
 import { MountsModule } from './mounts/mounts.module';
-import { AchievementsComponent } from './achievements/achievements.controller';
+import { AchievementsComponent } from './achievements/achievements.component';
 import { ApplicationComponent } from './application/application.component';
 import { BattlepetsComponent } from './battlepets/battlepets.component';
 import { CalendarComponent } from './calendar/calendar.component';
@@ -47,14 +46,10 @@ import { DropDirective } from './directives/drop.directive';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    UpgradeModule,
     MountsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private upgrade: UpgradeModule) {
-    this.upgrade.bootstrap(document.documentElement, ['simpleArmoryApp']);
-  }
 }
