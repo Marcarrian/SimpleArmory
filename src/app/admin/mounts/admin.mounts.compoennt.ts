@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'ap-admin-mounts',
-  templateUrl: './admin-mounts-component.ts',
-  styleUrls: ['./admin-mounts-component.scss'],
+  templateUrl: './admin-mounts.component.html',
+  styleUrls: ['./admin-mounts.component.scss'],
 })
 export class AdminMountsComponent {
 

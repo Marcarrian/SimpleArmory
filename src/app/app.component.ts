@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProfileService } from './login/profile.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  constructor() {
+  constructor(private profileService: ProfileService) {
   }
 }
 

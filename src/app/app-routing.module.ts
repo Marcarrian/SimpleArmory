@@ -18,59 +18,55 @@ import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
-    path: '/admin/:area/:section?/:subsection?',
+    path: 'admin/:area/:section?/:subsection?',
     component: AdminComponent,
   },
   {
-    path: '/admin',
+    path: 'admin',
     redirectTo: '/admin/categories/achievements/quests',
   },
   {
-    path: '/error/:realm/:character',
+    path: 'error/:realm/:character',
     component: ErrorComponent,
   },
   {
-    path: '/:region/:realm/:character/settings',
+    path: ':region/:realm/:character/settings',
     component: SettingsComponent,
   },
   {
-    path: '/:region/:realm/:character/achievements/:category',
+    path: ':region/:realm/:character/achievements/:category',
     component: AchievementsComponent,
   },
   {
-    path: '/:region/:realm/:character/collectable/battlepets',
+    path: ':region/:realm/:character/collectable/battlepets',
     component: BattlepetsComponent,
   },
   {
-    path: '/:region/:realm/:character/calendar',
+    path: ':region/:realm/:character/calendar',
     component: CalendarComponent,
   },
   {
-    path: '/:region/:realm/:character/collectable/companions',
+    path: ':region/:realm/:character/collectable/companions',
     component: CompanionsComponent,
   },
   {
-    path: '/:region/:realm/:character/collectable/mounts',
+    path: ':region/:realm/:character/collectable/mounts',
     component: MountsComponent,
   },
   {
-    path: '/:region/:realm/:character/collectable/toys',
+    path: ':region/:realm/:character/collectable/toys',
     component: ToysComponent,
   },
   {
-    path: '/:region/:realm/:character',
+    path: ':region/:realm/:character',
     component: OverviewComponent,
   },
   {
-    path: '/:region/:realm/:character/reputation',
+    path: ':region/:realm/:character/reputation',
     component: ReputationComponent,
   },
   {
-    path: '/',
-    component: LoginComponent,
-  },
-  {
-    path: '/login',
+    path: 'login',
     component: LoginComponent,
   },
   {

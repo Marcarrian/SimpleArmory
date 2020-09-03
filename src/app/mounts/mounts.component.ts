@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { MountsService } from './mounts.service';
+import { MountsService, MountSummary } from './mounts.service';
+import { PlannerService } from '../planner/planner.service';
+import { ApplicationService } from '../application/application.service';
+import { ActivatedRoute } from '@angular/router';
+import { Character } from '../login/character';
 
 @Component({
   selector: 'app-mounts',
@@ -8,77 +12,95 @@ import { MountsService } from './mounts.service';
 })
 export class MountsComponent {
 
-  constructor(private _mountsService: MountsService,
-              private _plannerService) {
+  mountSummary: MountSummary;
+  showPlanner = false;
+  plannerReturned = false;
+  planner = [];
+  wowHeadUrl = 'wowhead.com';
+
+  constructor(private mountsService: MountsService,
+              private plannerService: PlannerService,
+              public applicationService: ApplicationService,
+              private activatedRoute: ActivatedRoute) {
+    const region = activatedRoute.snapshot.paramMap.get('region');
+    const realm = activatedRoute.snapshot.paramMap.get('realm');
+    const charactername = activatedRoute.snapshot.paramMap.get('character');
+    // Analytics for page
+    // $window.ga('send', 'pageview', 'Mounts');
+    const character: Character = {region: 'eu', realm: 'kazzak', name: 'marcarrian'};
+    this.mountsService.mountSummary$(character).subscribe(mountSummary => this.mountSummary = mountSummary);
   }
 
-  public MountsCtrl($scope, MountsAndPetsService, PlannerService, $window, SettingsService) {
+  // called when planner checkbox is clicked
+  plannerChanged(): void {
+    if (this.showPlanner) {
+      // $window.ga('send', 'pageview', 'Planner');
 
-    $scope.settings = SettingsService;
+      // this.plannerService.getSteps(this.items).then(function (steps) {
+      //   this.plannerReturned = true;
+      //   this.planner = steps;
+      // });
+    }
+  }
 
-    // Analytics for page
-    $window.ga('send', 'pageview', 'Mounts');
+  // anchor css used for planner checkbox
+  anchorCss(boss): string {
+    if (boss.epic) {
+      return 'mnt-plan-epic';
+    }
 
-    // anchor css used for planner checkbox
-    $scope.anchorCss = function (boss) {
-      if (boss.epic) {
-        return 'mnt-plan-epic';
+    return 'mnt-plan-rare';
+  }
+
+  // img src for planner image
+  getPlanStepImageSrc(step): string {
+    if (step.capital) {
+      if (this.mountSummary?.isAlliance) {
+        return 'images/alliance.png';
       }
-
-      return 'mnt-plan-rare';
-    };
-
-    // img src for planner image
-    $scope.getPlanImageSrc = function (boss) {
-      if (!boss.icon) {
-        return '';
+      else {
+        return 'images/horde.png';
       }
+    }
+    else if (step.hearth) {
+      return 'images/hearth.png';
+    }
 
-      return '//wow.zamimg.com/images/wow/icons/tiny/' + boss.icon + '.gif';
-    };
+    return '';
+  }
 
-    MountsAndPetsService.getItems('mounts', 'mounts', 'mount').then(function (items) {
-      $scope.items = items;
+  // img src for planner image
+  getPlanImageSrc(boss): string {
+    if (!boss.icon) {
+      return '';
+    }
 
-      // called when planner checkbox is clicked
-      $scope.plannerChanged = function () {
-        if ($scope.showPlanner) {
-          $window.ga('send', 'pageview', 'Planner');
+    return '//wow.zamimg.com/images/wow/icons/tiny/' + boss.icon + '.gif';
+  }
 
-          PlannerService.getSteps(items).then(function (steps) {
-            $scope.plannerReturned = true;
-            $scope.planner = steps;
-          });
-        }
-      };
+  getStepTitle(step): string {
+    if (step.capital) {
+      return step.title + (this.mountSummary?.isAlliance ? 'Stormwind' : 'Orgrimmar');
+    }
+    else {
+      return step.title;
+    }
+  }
 
-      // img src for planner image
-      $scope.getPlanStepImageSrc = function (step) {
+  achFormater(n: number, d: number): string {
+    if (!n || !d) {
+      return '';
+    }
 
-        if (step.capital) {
-          if (items.isAlliance) {
-            return 'images/alliance.png';
-          }
-          else {
-            return 'images/horde.png';
-          }
-        }
-        else if (step.hearth) {
-          return 'images/hearth.png';
-        }
+    const percentage = n / d * 100;
 
-        return '';
-      };
+    // if the percentage is low enough, don't print the numbers, just use the percentage
+    // TODO why?
+    if (percentage < 18) {
+      return percentage + '%';
+    }
 
-      $scope.getStepTitle = function (step) {
-        if (step.capital) {
-          return step.title + (items.isAlliance ? 'Stormwind' : 'Orgrimmar');
-        }
-        else {
-          return step.title;
-        }
-      };
-    });
+    return '' + n + ' / ' + d + ' (' + percentage + '%)';
   }
 }
 

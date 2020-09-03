@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MountsModule } from './mounts/mounts.module';
 import { AchievementsComponent } from './achievements/achievements.component';
 import { ApplicationComponent } from './application/application.component';
 import { BattlepetsComponent } from './battlepets/battlepets.component';
@@ -21,6 +20,8 @@ import { OverviewComponent } from './overview/overview.component';
 import { FooDirective } from './directives/foo.directive';
 import { DragDirective } from './directives/drag.directive';
 import { DropDirective } from './directives/drop.directive';
+import { MountsComponent } from './mounts/mounts.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -41,12 +42,13 @@ import { DropDirective } from './directives/drop.directive';
     FooDirective,
     DragDirective,
     DropDirective,
+    MountsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MountsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
