@@ -12,6 +12,7 @@ import { ToysComponent } from './toys/toys.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ReputationComponent } from './reputation/reputation.component';
 import { LoginComponent } from './login/login.component';
+import { CharacterResolver } from './character/character.resolver';
 
 //      allow me to download json for admin site
 //     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|data|chrome-extension):/); TODO
@@ -36,6 +37,9 @@ const routes: Routes = [
   {
     path: ':region/:realm/:character/achievements/:category',
     component: AchievementsComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character/collectable/battlepets',
@@ -52,6 +56,9 @@ const routes: Routes = [
   {
     path: ':region/:realm/:character/collectable/mounts',
     component: MountsComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character/collectable/toys',
@@ -76,7 +83,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule],
 })
 export class AppRoutingModule {

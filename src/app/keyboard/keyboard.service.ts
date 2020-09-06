@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class AchievementsService {
+export class KeyboardService {
 
   public KeyboardService($document) {
     var pressed = [];

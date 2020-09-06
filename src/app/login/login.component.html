@@ -1,29 +1,46 @@
-<!--&lt;!&ndash; Modal Login Template &ndash;&gt;-->
+<div class="character-modal">
+  <section class="character-modal-title">
+    <h3>Enter realm and character</h3>
+  </section>
+  <section class="character-modal-form">
+    <div class="character-form">
+      <label>Realm</label>
+      <input type="text">
+      <label>Character</label>
+      <input type="text">
+    </div>
+  </section>
+  <section class="character-modal-submit">
+    <button>Go</button>
+  </section>
+</div>
+
+
 <!--<script type="text/ng-template" id="ModelLogin.html">-->
 <!--  <div class="modal-header">-->
-<!--      <h3 class="modal-title">Enter realm and character</h3>-->
+<!--    <h3 class="modal-title">Enter realm and character</h3>-->
 <!--  </div>-->
 <!--  <div class="modal-body">-->
-<!--  	<div class="input-group">-->
-<!--    	<span class="input-group-addon input-group-label">Realm</span>-->
+<!--    <div class="input-group">-->
+<!--      <span class="input-group-addon input-group-label">Realm</span>-->
 <!--      <ui-select ng-model="selectedRealm.selected"-->
-<!--                   ng-disabled="isDisabled"-->
-<!--                   style="width: 100%;"-->
-<!--                   focus-on="SetFocus"-->
-<!--                   title="Choose an realm">-->
-<!--          <ui-select-match placeholder="{{selectPlaceholder}}">{{$select.selected.name}}</ui-select-match>-->
-<!--          <ui-select-choices group-by="regionGroupFn" repeat="realm in realms | filter:{name:$select.search}">-->
-<!--            <div ng-bind-html="realm.name | highlight: $select.search"></div>-->
-<!--          </ui-select-choices>-->
+<!--                 ng-disabled="isDisabled"-->
+<!--                 style="width: 100%;"-->
+<!--                 focus-on="SetFocus"-->
+<!--                 title="Choose an realm">-->
+<!--        <ui-select-match placeholder="{{selectPlaceholder}}">{{$select.selected.name}}</ui-select-match>-->
+<!--        <ui-select-choices group-by="regionGroupFn" repeat="realm in realms | filter:{name:$select.search}">-->
+<!--          <div ng-bind-html="realm.name | highlight: $select.search"></div>-->
+<!--        </ui-select-choices>-->
 <!--      </ui-select>-->
 <!--    </div>-->
 <!--    <br/>-->
 <!--    <div class="input-group">-->
-<!--		<span class="input-group-addon input-group-label">Character</span>-->
-<!--        <input type="text" class="form-control" ng-model="characterName" ng-enter="ok()">-->
+<!--      <span class="input-group-addon input-group-label">Character</span>-->
+<!--      <input type="text" class="form-control" ng-model="characterName" ng-enter="ok()">-->
 <!--    </div>-->
 <!--  </div>-->
 <!--  <div class="modal-footer">-->
-<!--      <button class="btn btn-primary" ng-click="ok()">Go</button>-->
+<!--    <button class="btn btn-primary" ng-click="ok()">Go</button>-->
 <!--  </div>-->
 <!--</script>-->

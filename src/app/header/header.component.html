@@ -1,75 +1,80 @@
-<!--<div class="navbar navbar-default navbar-fixed-top" role="navigation">-->
-<!--  <div class="container">-->
-<!--    <div class="navbar-header">-->
-<!--      <button type="button" class="navbar-toggle" ng-show="isLoggedIn" ng-click="isCollapsed = !isCollapsed">-->
-<!--        <span class="sr-only">Toggle navigation</span>-->
-<!--        <span class="icon-bar"></span>-->
-<!--        <span class="icon-bar"></span>-->
-<!--        <span class="icon-bar"></span>-->
-<!--      </button>-->
-<!--      <a class="navbar-brand" ng-href="{{getUrl('login')}}"><span id="logo"></span></a>-->
-<!--    </div>-->
-<!--    <div class="navbar-collapse" collapse="isCollapsed">-->
-<!--      <ul class="nav navbar-nav" ng-show="isLoggedIn">-->
-<!--        <li ng-click="isCollapsed = true" ng-class="{ active: isActive('') }"><a ng-href="{{getUrl('')}}">Overview</a></li>-->
+<!--<a [routerLink]="getUrl('collectable/toys')">TOYS</a>-->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" *ngIf="isLoggedIn" (click)="isCollapsed = !isCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" [href]="getUrl('login')"><span id="logo"></span></a>
+    </div>
+    <div class="navbar-collapse" collapse="isCollapsed">
+      <ul class="nav navbar-nav" *ngIf="character$ | async as character">
+        <li (click)="isCollapsed = true" [ngClass]="{ active: isActive('') }"><a [href]="getUrl('')">Overview</a></li>
 
-<!--        <li ng-class="{ active: isActive('achievements', true) }" class="dropdown">-->
-<!--          <a href="#" class="dropdown-toggle">Achievements <b class="caret"></b></a>-->
-<!--          <ul class="dropdown-menu">-->
-<!--            <li ng-class="{ active: isActive('achievements/character') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/character')}}">Character</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/quests') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/quests')}}">Quests</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/exploration') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/exploration')}}">Exploration</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/pvp') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/pvp')}}">Player vs. Player</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/dungeons') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/dungeons')}}">Dungeons & Raids</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/professions') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/professions')}}">Professions</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/reputation') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/reputation')}}">Reputation</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/events') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/events')}}">World Events</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/pets') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/pets')}}">Pet Battles</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/collections') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/collections')}}">Collections</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/expansions') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/expansions')}}">Expansion Features</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/legacy') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/legacy')}}">Legacy</a></li>-->
-<!--            <li ng-class="{ active: isActive('achievements/feats') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('achievements/feats')}}">Feats of Strength</a></li>-->
-<!--          </ul>-->
-<!--        </li>-->
+        <li [ngClass]="{ active: isActive('achievements', true) }" class="dropdown">
+          <a href="#" class="dropdown-toggle">Achievements <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li [ngClass]="{ active: isActive('achievements/character') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/character')">Character</a></li>
+            <li [ngClass]="{ active: isActive('achievements/quests') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/quests')">Quests</a></li>
+            <li [ngClass]="{ active: isActive('achievements/exploration') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/exploration')">Exploration</a></li>
+            <li [ngClass]="{ active: isActive('achievements/pvp') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/pvp')">Player vs. Player</a></li>
+            <li [ngClass]="{ active: isActive('achievements/dungeons') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/dungeons')">Dungeons & Raids</a></li>
+            <li [ngClass]="{ active: isActive('achievements/professions') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/professions')">Professions</a></li>
+            <li [ngClass]="{ active: isActive('achievements/reputation') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/reputation')">Reputation</a></li>
+            <li [ngClass]="{ active: isActive('achievements/events') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/events')">World Events</a></li>
+            <li [ngClass]="{ active: isActive('achievements/pets') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/pets')">Pet Battles</a></li>
+            <li [ngClass]="{ active: isActive('achievements/collections') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/collections')">Collections</a></li>
+            <li [ngClass]="{ active: isActive('achievements/expansions') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/expansions')">Expansion Features</a></li>
+            <li [ngClass]="{ active: isActive('achievements/legacy') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/legacy')">Legacy</a></li>
+            <li [ngClass]="{ active: isActive('achievements/feats') }"><a (click)="isCollapsed = true" [href]="getUrl('achievements/feats')">Feats of Strength</a></li>
+          </ul>
+        </li>
 
-<!--        <li ng-class="{ active: isActive('collectable', true) }" class="dropdown">-->
-<!--          <a href="#" class="dropdown-toggle">Collectable <b class="caret"></b></a>-->
-<!--          <ul class="dropdown-menu">-->
-<!--            <li ng-class="{ active: isActive('collectable/mounts') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('collectable/mounts')}}">Mounts</a></li>-->
-<!--            <li ng-class="{ active: isActive('collectable/companions') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('collectable/companions')}}">Companions</a></li>-->
-<!--            <li ng-class="{ active: isActive('collectable/battlepets') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('collectable/battlepets')}}">Battle Pets</a></li>-->
-<!--            <li ng-class="{ active: isActive('collectable/toys') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('collectable/toys')}}">Toys</a></li>-->
-<!--          </ul>-->
-<!--        </li>-->
-<!--        <li ng-class="{ active: isActive('calendar') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('calendar')}}">Calendar</a></li>-->
-<!--        <li ng-class="{ active: isActive('reputation') }"><a ng-click="isCollapsed = true" ng-href="{{getUrl('reputation')}}">Reputation</a></li>-->
-<!--      </ul>-->
-<!--      <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn">-->
-<!--        <li class="dropdown">-->
-<!--            <a href="#" class="navbar-char-link dropdown-toggle">-->
-<!--                <img class="navbar-char-image" ng-src="{{imgUrl()}}"/>-->
-<!--                <b class="caret"></b>-->
-<!--            </a>-->
-<!--            <ul class="dropdown-menu">-->
-<!--              <li class="signin-label">Signed in as</li>-->
-<!--              <li><strong class="signin-name">{{character.name}} @ {{character.realm}}</strong></li>-->
-<!--              <li role="separator" class="divider"></li>-->
-<!--              <li><a ng-href="{{armoryUrl()}}" target="_blank">Armory profile</a></li>-->
-<!--              <li><a href="mailto:simplearmory@gmail.com?subject=Simple Armory Feedback">Contact</a></li>-->
-<!--              <li>-->
-<!--                  <a ng-click="toggleDarkTheme()" class="toggleTheme">-->
-<!--                    Use <span ng-if="!$parent.isUsingDarkTheme">Dark Theme</span><span ng-if="$parent.isUsingDarkTheme">Light Theme</span>-->
-<!--                  </a>-->
-<!--              </li>-->
-<!--              <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EQKUGCXWLES44" target="_blank">Donate</a></li>-->
-<!--              &lt;!&ndash; hide until I implement-->
-<!--              <li role="separator" class="divider"></li>-->
-<!--              <li><a ng-href="{{getUrl('settings')}}">Settings</a></li>-->
-<!--              <li><a href="#">Sign out</a></li>-->
-<!--              &ndash;&gt;-->
-<!--            </ul>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+        <li [ngClass]="{ active: isActive('collectable', true) }" class="dropdown">
+          <a href="#" class="dropdown-toggle">Collectable <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li [ngClass]="{ active: isActive('collectable/mounts') }"><a (click)="isCollapsed = true" [href]="getUrl('collectable/mounts')">Mounts</a></li>
+            <li [ngClass]="{ active: isActive('collectable/companions') }"><a (click)="isCollapsed = true" [href]="getUrl('collectable/companions')">Companions</a></li>
+            <li [ngClass]="{ active: isActive('collectable/battlepets') }"><a (click)="isCollapsed = true" [href]="getUrl('collectable/battlepets')">Battle Pets</a></li>
+            <li [ngClass]="{ active: isActive('collectable/toys') }"><a (click)="isCollapsed = true" [href]="getUrl('collectable/toys')">Toys</a></li>
+          </ul>
+        </li>
+        <li [ngClass]="{ active: isActive('calendar') }"><a (click)="isCollapsed = true" [href]="getUrl('calendar')">Calendar</a></li>
+        <li [ngClass]="{ active: isActive('reputation') }"><a (click)="isCollapsed = true" [href]="getUrl('reputation')">Reputation</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right" *ngIf="isLoggedIn">
+        <li class="dropdown">
+          <a href="#" class="navbar-char-link dropdown-toggle">
+            <img
+                *ngIf="profileService.profileMediaAvatarUrl$ | async as avatarUrl"
+                class="navbar-char-image"
+                [src]="avatarUrl"
+            />
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="signin-label">Signed in as</li>
+            <li><strong *ngIf="character$ | async; let character" class="signin-name">{{character.name}} @ {{character.realm}}</strong></li>
+            <li role="separator" class="divider"></li>
+            <li><a [href]="armoryUrl()" target="_blank">Armory profile</a></li>
+            <li><a href="mailto:simplearmory@gmail.com?subject=Simple Armory Feedback">Contact</a></li>
+            <li>
+              <a (click)="toggleDarkTheme()" class="toggleTheme">
+                Use <span *ngIf="!isUsingDarkTheme">Dark Theme</span><span *ngIf="isUsingDarkTheme">Light Theme</span>
+              </a>
+            </li>
+            <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EQKUGCXWLES44" target="_blank">Donate</a></li>
+            <!-- hide until I implement
+            <li role="separator" class="divider"></li>
+            <li><a [href]="getUrl('settings')">Settings</a></li>
+            <li><a [href]="#">Sign out</a></li>
+            -->
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

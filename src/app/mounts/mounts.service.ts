@@ -1,33 +1,42 @@
 import { Injectable } from '@angular/core';
-import { Character } from '../login/character';
+import { Character } from '../character/character';
 import { HttpClient } from '@angular/common/http';
 import { combineLatest, Observable, of } from 'rxjs';
-import { Profile, ProfileService } from '../login/profile.service';
+import { ProfileService } from '../login/profile.service';
 import MountsJson from '../../assets/data/mounts.json';
+import { Category, Item, Subcategory } from '../model/category';
+import { armorystatsUrl } from '../util/constants';
 import { switchMap } from 'rxjs/operators';
-
-export const ARMORYSTATS_URL = 'https://armorystats.info/';
+import { CharacterService } from '../character/character.service';
+import { Profile } from '../login/profile';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MountsService {
 
-  constructor(private http: HttpClient, private profileService: ProfileService) {
+  constructor(private http: HttpClient,
+              private profileService: ProfileService,
+              private characterService: CharacterService) {
   }
 
-  public mountSummary$(character: Character): Observable<MountSummary> {
-    return combineLatest([this.getCollectedMounts$(character), this.profileService.getProfile$(character)])
-      .pipe(
-        switchMap(([collectedMounts, profile]) => this.createMountSummary(collectedMounts, profile)),
-      );
+  public mountSummary$(): Observable<MountSummary> {
+    const collectedMountsByCharacter$ = this.characterService.character$.pipe(
+      switchMap(character => this.collectedMounts$(character)),
+    );
+    return combineLatest([
+      collectedMountsByCharacter$,
+      this.profileService.profile$,
+    ]).pipe(
+      switchMap(([collectedMounts, profile]) => this.createMountSummary$(collectedMounts, profile)),
+    );
   }
 
-  private getCollectedMounts$(character: Character): Observable<MountCollection> {
-    return this.http.get<MountCollection>(ARMORYSTATS_URL + character.region + '/' + character.realm + '/' + character.name + '/collections/mounts');
+  private collectedMounts$(character: Character): Observable<MountCollection> {
+    return this.http.get<MountCollection>(`${armorystatsUrl}${character.region}/${character.realm}/${character.name}/collections/mounts`);
   }
 
-  private createMountSummary(collectedMounts: MountCollection, profile: Profile): Observable<MountSummary> {
+  private createMountSummary$(collectedMounts: MountCollection, profile: Profile): Observable<MountSummary> {
     const isAlliance = profile.faction.type === 'ALLIANCE';
     const mountSummary: MountSummary = {
       collection: new Map<number, MountCollected>(),
@@ -41,7 +50,7 @@ export class MountsService {
 
     collectedMounts.mounts.forEach(mountCollected => mountSummary.collection.set(mountCollected.mount.id, mountCollected));
 
-    MountsJson.forEach((category: Category) => {
+    MountsJson.forEach((category: any) => {
       const cat: Category = {name: category.name, subcats: []};
       mountSummary.categories.push(cat);
 
@@ -49,7 +58,7 @@ export class MountsService {
           const subcat: Subcategory = {name: subcategory.name, items: []};
 
           subcategory.items.forEach((item: Item) => {
-            const itm: Item = item;
+            const itm: Item = {...item};
             itm.link = this.determineItemLink(item, profile);
 
             if (mountSummary.collection.get(+itm.ID)) {
@@ -96,7 +105,7 @@ export class MountsService {
   }
 
   private determineItemLink(item: Item, profile: Profile): string {
-    // Need to some extra work to determine what our url should be
+    // Need to do some extra work to determine what our url should be
     // By default we'll use a spell id
     let link = 'spell=' + item.spellid;
 
@@ -121,8 +130,7 @@ export class MountsService {
     if (!item.side) {
       return true;
     }
-    const side = profile.faction.type === 'HORDE' ? 'H' : 'A';
-    return item.side === side;
+    return item.side === profile.side;
   }
 
   private allowedRaceOnItemMatchesProfileRace(item: Item, profile: Profile): boolean {
@@ -165,43 +173,10 @@ export interface Mount {
   name: any;
 }
 
-export interface Item { // TODO mountItem?
-  ID?: string;
-  icon?: string;
-  itemId?: number;
-  spellid?: number;
-  link?: string;
-  side?: string;
-  allianceId?: string;
-  hordeId?: string;
-  creatureId?: string;
-  collected?: boolean;
-  notObtainable?: boolean;
-  allowableRaces?: string[];
-  allowableClasses?: string[];
-}
-
-// potential item attributes
-// quality?: Quality;
-// level?: number;
-// stats?: Stats;
-
 export interface Quality {
   type: string;
 }
 
 export interface Stats {
   breed_id: number;
-}
-
-export interface Category {
-  id?: string;
-  name?: string;
-  subcats?: Category[];
-}
-
-export interface Subcategory {
-  id?: string;
-  name?: string;
-  items?: Item[];
 }

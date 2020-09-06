@@ -1,209 +1,153 @@
-// @Injectable({
-//   providedIn: 'root',
-// })
+import { Injectable } from '@angular/core';
+import { Character } from '../character/character';
+import { combineLatest, EMPTY, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { AchievementCatJson, AchievementItemJson, AchievementSubcatJson, AchievementSummary, AchievementSummaryCategory, AchievementSummarySubCategory, AchievementSupercatJson, ArmorystatsAchievement, ArmorystatsAchievementChildCriteria, ArmorystatsAchievementResponse, MyAchievement } from './achievement';
+import { switchMap } from 'rxjs/operators';
+import { Profile, ProfileService } from '../login/profile.service';
+import AchievementsJson from '../../assets/data/achievements.json';
+import { armorystatsUrl } from '../util/constants';
+
+@Injectable({
+  providedIn: 'root',
+})
 export class AchievementsService {
 
-  constructor() {
+  fakeCompletionTime = 312;
+
+  // ignore achievements that shouldn't show up in the UI
+  ignoredFoundAchievements = {
+    10050: true, // learn a primary prof
+    10051: true,  // learn two primary prof
+  };
+
+  constructor(private http: HttpClient, private profileService: ProfileService) {
   }
 
-  // public AchievementsService($http, $log, LoginService, $routeParams, SettingsService, $q, $window) {
-  //   // ignore achievements that shouldn't show up in the UI
-  //   var ignoredFoundAchivements =
-  //     {
-  //       10050: true, // learn a primary prof
-  //       10051: true,  // learn two primary prof
-  //     };
-  //
-  //   //  cache results
-  //   var parsedAchievements;
-  //   LoginService.onLogin(function () {
-  //     parsedAchievements = undefined;
-  //   });
-  //
-  //   return {
-  //     getAchievements: function () {
-  //       var my_achievements, profile;
-  //
-  //       if (parsedAchievements) {
-  //         return $q.when(parsedAchievements);
-  //       }
-  //
-  //       return LoginService.getProfile($routeParams)
-  //         .then(function (p) {
-  //           profile = p;
-  //
-  //           // get achievements from service
-  //           return $http.get(SettingsService.apiUrl($routeParams, 'achievements'), {cache: true});
-  //         })
-  //         .then(function (a) {
-  //           my_achievements = a.data;
-  //
-  //           // now get the json of all the achievements
-  //           return $http.get('data/achievements.json', {cache: true});
-  //         })
-  //         .then(function (ach_json_data) {
-  //           parsedAchievements = parseAchievementObject(ach_json_data.data.supercats, profile, my_achievements, SettingsService, $window);
-  //           return parsedAchievements;
-  //         });
-  //     },
-  //   };
-  //
-  //   function parseAchievementObject(supercats, profile, achievements, settings, $window) {
-  //     var obj = {};
-  //     var completed = {};
-  //     var critCompleted = {};
-  //     var totalPossible = 0;
-  //     var totalCompleted = 0;
-  //     var totalFoS = 0;
-  //     var totalLegacy = 0;
-  //     var found = {};
-  //     var name = '';
-  //     var faction = '';
-  //     $log.log('Parsing achievements.json...');
-  //
-  //     name = profile.name;
-  //     faction = profile.faction;
-  //
-  //     // Build up lookup for achievements that character has completed
-  //     achievements.achievements.forEach(ach => {
-  //       if (ach.completed_timestamp) {
-  //         // hash the achievement and its timestamp
-  //         completed[ach.id] = ach.completed_timestamp;
-  //       }
-  //
-  //       // Build up lookup for criteria that character has completed
-  //       ach.criteria.forEach(crit => {
-  //         if (crit.is_completed) {
-  //           critCompleted[crit.id] = true;
-  //         }
-  //
-  //         crit.child_criteria.forEach(child_crit => {
-  //           if (child_crit.is_completed) {
-  //             critCompleted[child_crit.id] = true;
-  //           }
-  //         });
-  //       });
-  //     });
-  //
-  //     // Lets parse out all the super categories and build out our structure
-  //     supercats.forEach(supercat => {
-  //       var possibleCount = 0;
-  //       var completedCount = 0;
-  //
-  //       // Add the supercategory to the object, so we can do quick lookups on category
-  //       obj[supercat.name] = {};
-  //       obj[supercat.name].categories = [];
-  //
-  //       supercat.cats.forEach(cat => {
-  //         var myCat = {'name': cat.name, 'subcats': []};
-  //
-  //         cat.subcats.forEach(subcat => {
-  //           var mySubCat = {'name': subcat.name, 'achievements': []};
-  //
-  //           subcat.items.forEach(ach => {
-  //
-  //             // Mark this achievement in our found tracker
-  //             found[ach.id] = true;
-  //
-  //             var myAchievement = ach, added = false;
-  //
-  //             // Store the date we completed it
-  //             myAchievement.completed = completed[ach.id];
-  //
-  //             // if we're forcing all completed then set those up
-  //             if (!myAchievement.completed && settings.debug) {
-  //               myAchievement.completed = settings.fakeCompletionTime;
-  //             }
-  //
-  //             // Hack: until blizz fixes api, don't stamp with date
-  //             if (myAchievement.completed && myAchievement.completed !== settings.fakeCompletionTime) {
-  //               myAchievement.rel = 'who=' + name + '&when=' + myAchievement.completed;
-  //             }
-  //
-  //             // Always add it if we've completed it, it should show up regardless if its available
-  //             if (myAchievement.completed) {
-  //               added = true;
-  //               mySubCat.achievements.push(myAchievement);
-  //
-  //               // if this is feats of strength then I want to keep a seperate count for that
-  //               // since its not a percentage thing
-  //               if (supercat.name === 'Feats of Strength') {
-  //                 totalFoS++;
-  //               }
-  //               else if (supercat.name === 'Legacy') {
-  //                 totalLegacy++;
-  //               }
-  //             }
-  //             else if (ach.criteria) {
-  //
-  //               // build up rel based on completed criteria for the achievement
-  //               // and pass that along to wowhead
-  //               //cri=40635:40636:40637:40638:40640:40641:40642:40643:40644:40645
-  //               var criCom = [];
-  //               ach.criteria.forEach((wowheadCrit, blizzCrit) => {
-  //                 if (critCompleted[blizzCrit]) {
-  //                   criCom.push(wowheadCrit);
-  //                 }
-  //               });
-  //
-  //               if (criCom.length > 0) {
-  //                 myAchievement.rel = 'cri=' + criCom.join(':');
-  //               }
-  //             }
-  //
-  //             // Update counts proper
-  //             if (supercat.name !== 'Feats of Strength' && supercat.name !== 'Legacy' && !ach.notObtainable &&
-  //               (!ach.side || ach.side === faction)) {
-  //               possibleCount++;
-  //               totalPossible++;
-  //
-  //               if (myAchievement.completed) {
-  //                 completedCount++;
-  //                 totalCompleted++;
-  //               }
-  //
-  //               // if we haven't already added it, then this is one that should show up in the page of achievements
-  //               // so add it
-  //               if (!added) {
-  //                 mySubCat.achievements.push(myAchievement);
-  //               }
-  //             }
-  //           });
-  //
-  //           if (mySubCat.achievements.length > 0) {
-  //             myCat.subcats.push(mySubCat);
-  //           }
-  //         });
-  //
-  //         // Add the category to the obj
-  //         obj[supercat.name].categories.push(myCat);
-  //       });
-  //
-  //       obj[supercat.name].possible = possibleCount;
-  //       obj[supercat.name].completed = completedCount;
-  //
-  //       // Add the FoS count if this is the FoS
-  //       if (supercat.name === 'Feats of Strength') {
-  //         obj[supercat.name].foSTotal = totalFoS;
-  //       }
-  //       else if (supercat.name === 'Legacy') {
-  //         obj[supercat.name].legacyTotal = totalLegacy;
-  //       }
-  //     });
-  //
-  //     for (var achId in found) {
-  //       if (found.hasOwnProperty(achId) && !found[achId] && !ignoredFoundAchivements[achId]) {
-  //         $window.ga('send', 'event', 'MissingAchievement', achId);
-  //         console.log('WARN: Found achievement "' + achId + '" from character but not in db.');
-  //       }
-  //     }
-  //
-  //     // Add totals
-  //     obj.possible = totalPossible;
-  //     obj.completed = totalCompleted;
-  //
-  //     // Data object we expose externally
-  //     return obj;
-  //   }
-  // }
+  public achievementSummary$(character: Character): Observable<AchievementSummary> {
+    return combineLatest([this.earnedAchievements$(character), this.profileService.profile$])
+      .pipe(
+        switchMap(([earnedAchievements, profile]) => this.createAchievementSummary$(earnedAchievements, profile)),
+      );
+  }
+
+  public createAchievementSummary$(
+    armorystatsAchievementResponse: ArmorystatsAchievementResponse,
+    profile: Profile): Observable<AchievementSummary> {
+    const achievementSummary: AchievementSummary = {
+      categories: new Map<string, AchievementSummaryCategory>(),
+      possible: 0,
+      completed: 0,
+    };
+    const completedAchievements = new Map<number, number>();
+    const fulfilledCriteria = new Map<string, boolean>();
+    const found = new Map<number, boolean>();
+    let totalFeatsOfStrength = 0;
+    let totalLegacy = 0;
+
+    // Build up lookup for achievements that character has completed
+    armorystatsAchievementResponse.achievements.forEach((armorystatsAchievement: ArmorystatsAchievement) => {
+      if (armorystatsAchievement.completed_timestamp) {
+        completedAchievements.set(armorystatsAchievement.id, armorystatsAchievement.completed_timestamp);
+      }
+
+      if (armorystatsAchievement.criteria.is_completed) {
+        fulfilledCriteria.set('' + armorystatsAchievement.criteria.id, true);
+      }
+
+      armorystatsAchievement.criteria.child_criteria.forEach((childCriteria: ArmorystatsAchievementChildCriteria) => {
+        if (childCriteria.is_completed) {
+          fulfilledCriteria.set('' + childCriteria.id, true);
+        }
+      });
+
+      AchievementsJson.supercats.forEach((supercat: AchievementSupercatJson) => {
+        let possibleCount = 0;
+        let completedCount = 0;
+
+        supercat.cats.forEach((cat: AchievementCatJson) => {
+          const myCat: AchievementSummaryCategory = {name: cat.name, subcats: []};
+
+          cat.subcats.forEach((subcat: AchievementSubcatJson) => {
+            const mySubCat: AchievementSummarySubCategory = {name: subcat.name, achievements: []};
+
+            subcat.items.forEach((achievementJson: AchievementItemJson) => {
+              found.set(+achievementJson.id, true);
+
+              const myAchievement: MyAchievement = achievementJson;
+              let added = false;
+
+              myAchievement.completed = completedAchievements.get(+achievementJson.id);
+
+              // TODO debug option?
+              // Hack: until blizz fixes api, don't stamp with date
+              if (myAchievement.completed && myAchievement.completed !== this.fakeCompletionTime) {
+                myAchievement.rel = 'who=' + name + '&when=' + myAchievement.completed;
+              }
+
+              if (myAchievement.completed) {
+                added = true;
+                mySubCat.achievements.push(myAchievement);
+
+                // if this is feats of strength then I want to keep a seperate count for that
+                // since its not a percentage thing
+                if (supercat.name === 'Feats of Strength') {
+                  totalFeatsOfStrength++;
+                }
+                else if (supercat.name === 'Legacy') {
+                  totalLegacy++;
+                }
+              }
+              else if (achievementJson.criteria) {
+                // build up rel based on completed criteria for the achievement
+                // and pass that along to wowhead
+                // cri=40635:40636:40637:40638:40640:40641:40642:40643:40644:40645
+                // TODO "criCom"??
+                const criCom: string[] = [];
+                achievementJson.criteria.forEach((wowheadCriteria, blizzardCriteria) => {
+                  if (fulfilledCriteria.get(blizzardCriteria)) {
+                    criCom.push(wowheadCriteria);
+                  }
+                });
+
+                if (criCom.length > 0) {
+                  myAchievement.rel = 'cri=' + criCom.join(':');
+                }
+              }
+
+              // Update counts proper
+              if (supercat.name !== 'Feats of Strength' && supercat.name !== 'Legacy' && !achievementJson.notObtainable &&
+                (!achievementJson.side || achievementJson.side === profile.side)) {
+                possibleCount++;
+                achievementSummary.possible++;
+
+                if (myAchievement.completed) {
+                  completedCount++;
+                  achievementSummary.completed++;
+                }
+
+                // if we haven't already added it, then this is one that should show up in the page of achievements
+                // so add it
+                if (!added) {
+                  mySubCat.achievements.push(myAchievement);
+                }
+              }
+            });
+
+            if (mySubCat.achievements.length > 0) {
+              myCat.subcats.push(mySubCat);
+            }
+          });
+
+          achievementSummary.categories.set(myCat.name, myCat);
+        });
+      });
+
+    });
+    return EMPTY;
+  }
+
+  private earnedAchievements$(character: Character): Observable<ArmorystatsAchievementResponse> {
+    return this.http.get<ArmorystatsAchievementResponse>(`${armorystatsUrl}${character.region}/${character.realm}/${character.name}/achievements`);
+  }
 }

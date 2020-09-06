@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AchievementsComponent } from './achievements/achievements.component';
 import { ApplicationComponent } from './application/application.component';
 import { BattlepetsComponent } from './battlepets/battlepets.component';
@@ -22,6 +22,7 @@ import { DragDirective } from './directives/drag.directive';
 import { DropDirective } from './directives/drop.directive';
 import { MountsComponent } from './mounts/mounts.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ProgressFormatterPipe } from './shared/pipe/progress-formatter.pipe';
 
 @NgModule({
   declarations: [
@@ -43,12 +44,14 @@ import { HttpClientModule } from '@angular/common/http';
     DragDirective,
     DropDirective,
     MountsComponent,
+    ProgressFormatterPipe,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

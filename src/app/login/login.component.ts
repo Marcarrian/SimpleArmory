@@ -7,25 +7,10 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
-  public LoginCtrl($scope, $rootScope, $modal, $location, $timeout) {
-    var modalInstance = $modal.open({
-      templateUrl: 'ModelLogin.html',
-      controller: 'ModalInstanceCtrl',
-      backdrop: 'static',
-    });
-
-    modalInstance.result.then(function (loginObj) {
-
-      $location.url(loginObj.region + '/' + loginObj.realm + '/' + loginObj.character);
-    });
-
-    $rootScope.$on('$routeChangeSuccess', function () {
-
-      modalInstance.dismiss();
-    });
+  constructor() {
   }
 
-  public ModalInstanceCtrl($scope, $modalInstance, BlizzardRealmService, $timeout) {
+  public ModalInstanceCtrl($scope, $modalInstance, BlizzardRealmService, $timeout): void {
 
     // initialize with select disabled and a loading text
     $scope.realms = [];
@@ -36,7 +21,7 @@ export class LoginComponent {
     $scope.isDisabled = true;
 
     // grouping for drop down
-    $scope.regionGroupFn = function (realm) {
+    $scope.regionGroupFn = realm => {
       if (realm.region.toLowerCase() === 'us') {
         return 'US';
       }
@@ -45,7 +30,7 @@ export class LoginComponent {
       }
     };
 
-    BlizzardRealmService.getAllRealms().then(function (realms) {
+    BlizzardRealmService.getAllRealms().then(realms => {
 
       $scope.selectPlaceholder = 'Enter an realm...';
       $scope.isDisabled = false;
@@ -56,11 +41,11 @@ export class LoginComponent {
       $scope.$broadcast('SetFocus');
     });
 
-    $scope.ok = function () {
+    $scope.ok = () => {
       $modalInstance.close({
-        'region': $scope.selectedRealm.selected.region,
-        'realm': $scope.selectedRealm.selected.slug,
-        'character': $scope.characterName.toLowerCase(), // Blizzard API doesn't place nice with chars like Ä at start of names
+        region: $scope.selectedRealm.selected.region,
+        realm: $scope.selectedRealm.selected.slug,
+        character: $scope.characterName.toLowerCase(), // Blizzard API doesn't place nice with chars like Ä at start of names
       });
     };
   }

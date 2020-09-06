@@ -1,25 +1,32 @@
-<!--<div class="container">-->
-<!--  <div class="page-header">-->
-<!--    <h2>-->
-<!--        Achievements <small>{{superCat}}</small>-->
-<!--        <div class="progress progressRight">-->
-<!--            <progressbar max="100" type="success"-->
-<!--      	  		value="superCat == 'Feats of Strength'  || superCat == 'Legacy' ? 100 : percent(achievements.completed, achievements.possible)" >-->
-<!--      	  		<span ng-hide="superCat == 'Feats of Strength' || superCat == 'Legacy'">{{ achFormater(achievements.completed, achievements.possible) }}</span>-->
-<!--      	  		<span ng-show="superCat == 'Feats of Strength'">{{ achievements.foSTotal }}</span>-->
-<!--              <span ng-show="superCat == 'Legacy'">{{ achievements.legacyTotal }}</span>-->
-<!--      	  	</progressbar>  	-->
-<!--        </div>-->
-<!--    </h2>-->
-<!--  </div>-->
-<!--  -->
-<!--  <h3 class="categoryHeader" ng-hide="category.name == superCat" ng-repeat-start="category in achievements.categories">{{ category.name }}</h3>-->
-<!--  <div class="sect" ng-repeat="subcat in category.subcats">-->
-<!--      <h5 class="subCatHeader">{{ subcat.name }}</h5>-->
+<div class="container">
+  <div class="page-header">
+    <h2>
+      Achievements <small>{{superCategory}}</small>
+      <div class="progress progressRight">
+        <!--        <progressbar max="100" type="success"-->
+        <!--                     value="superCat == 'Feats of Strength'  || superCat == 'Legacy' ? 100 : percent(achievements.completed, achievements.possible)">-->
+        <!--          <span *ngIf="!(superCategory == 'Feats of Strength' || superCategory == 'Legacy')">{{ achFormater(achievements.completed, achievements.possible) }}</span>-->
+        <!--          <span *ngIf="superCategory === 'Feats of Strength'">{{ achievements.foSTotal }}</span>-->
+        <!--          <span *ngIf="superCategory === 'Legacy'">{{ achievements.legacyTotal }}</span>-->
+        <!--        </progressbar>-->
+      </div>
+    </h2>
+  </div>
 
-<!--      <a target="{{settings.anchorTarget}}" ng-href="//{{settings.WowHeadUrl}}/achievement={{achievement.id}}" class="thumbnail" ng-attr-rel="{{achievement.rel}}" ng-repeat="achievement in subcat.achievements" ng-class="{borderOn:!achievement.completed, borderOff:achievement.completed}">-->
-<!--        <img ng-src="{{getImageSrc(achievement)}}">-->
-<!--      </a>-->
-<!--  </div>-->
-<!--  <div class="clear" ng-repeat-end /> -->
-<!--</div>-->
+  <ng-container *ngFor="let category of achievements?.categories">
+    <h3 class="categoryHeader" *ngIf="category.name !== superCategory">{{ category.name }}</h3>
+    <div class="sect" *ngFor="let subcat of category.subcats">
+      <h5 class="subCatHeader">{{ subcat.name }}</h5>
+
+      <a [target]="anchorTarget"
+         href="//{{wowHeadUrl}}/achievement={{achievement.id}}"
+         class="thumbnail" ng-attr-rel="{{achievement.rel}}"
+         *ngFor="let achievement of subcat.achievements"
+         [ngClass]="{borderOn:!achievement.completed, borderOff:achievement.completed}"
+      >
+        <img [src]="getImageSrc(achievement)">
+      </a>
+    </div>
+  </ng-container>
+  <!--  <div class="clear" ng-repeat-end/>-->
+</div>

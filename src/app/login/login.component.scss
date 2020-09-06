@@ -1,0 +1,36 @@
+.character-modal {
+  width: 600px;
+  background-color: #0EC077;
+
+  > section {
+
+    &.character-modal-title {
+      height: 65px;
+
+      h3 {
+        font-size: 24px;
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    &.character-modal-form {
+      height: 120px;
+
+      .character-form {
+        display: grid;
+        grid-template-columns: 100px 200px;
+      }
+    }
+
+    &.character-modal-submit {
+      height: 65px;
+
+      button {
+      }
+    }
+  }
+
+
+}
+
