@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ApplicationService {
 
-  // Helper to get the image id off an item
+  // Helper to get the image id of an item
   public getImageSrc(item, renderIcon?): string {
     renderIcon = renderIcon || item.collected;
     if (renderIcon) {
@@ -16,6 +16,5 @@ export class ApplicationService {
       // 1x1 gif
       return 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
     }
-  };
-
+  }
 }

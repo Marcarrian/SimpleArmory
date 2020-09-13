@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { PetSummary } from './pets';
 import { ApplicationService } from '../application/application.service';
 import { WOWHEAD_URL } from '../shared/wowhead-url';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-companions',
@@ -18,6 +17,6 @@ export class CompanionsComponent {
   constructor(private petService: PetService,
               public applicationService: ApplicationService,
               @Inject(WOWHEAD_URL) public wowheadUrl) {
-    this.companionPetSummary$ = this.petService.companionPetSummary$();
+    this.companionPetSummary$ = this.petService.companionpetSummary$();
   }
 }

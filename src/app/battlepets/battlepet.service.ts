@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CharacterService } from '../character/character.service';
 import { combineLatest, Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Character } from '../character/character';
 import { armorystatsUrl } from '../util/constants';
 import { Pet, PetCollection, PetSummary } from './pets';
 import { Profile } from '../profile/profile';
 import { ProfileService } from '../profile/profile.service';
-import PetsJson from '../../assets/data/pets.json';
+import BattlepetsJson from '../../assets/data/battlepets.json';
 import { Category, Item, Subcategory } from '../model/category';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PetService {
+export class BattlepetService {
 
   // issues/53: Pets that we can ignore warning for because they are battle pets
   private ignoredFoundPets = {
@@ -31,7 +31,7 @@ export class PetService {
 
   }
 
-  public companionpetSummary$(): Observable<PetSummary> {
+  public battlepetSummary$(): Observable<PetSummary> {
     const collectedPetsByCharacter$ = this.characterService.character$
       .pipe(switchMap(character => this.collectedPets$(character)));
     return combineLatest([
@@ -60,7 +60,7 @@ export class PetService {
 
     collectedPets.pets.forEach(petCollected => petSummary.collection.set(+petCollected.species.id, petCollected));
 
-    PetsJson.forEach((category: any) => {
+    BattlepetsJson.forEach((category: any) => {
       const cat: Category = {name: category.name, subcats: []};
       petSummary.categories.push(cat);
 

@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { PetSummary } from '../companions/pets';
+import { ApplicationService } from '../application/application.service';
+import { WOWHEAD_URL } from '../shared/wowhead-url';
+import { BattlepetService } from './battlepet.service';
 
 @Component({
   selector: 'app-battlepets',
@@ -7,15 +12,11 @@ import { Component } from '@angular/core';
 })
 export class BattlepetsComponent {
 
-  public BattlePetsCtrl($scope, MountsAndPetsService, $window, SettingsService) {
+  battlePetSummary$: Observable<PetSummary>;
 
-    $scope.settings = SettingsService;
-
-    // Analytics for page
-    $window.ga('send', 'pageview', 'BattlePets');
-
-    MountsAndPetsService.getItems('battlepets', 'pets', 'species').then(function (items) {
-      $scope.items = items;
-    });
+  constructor(private battlepetService: BattlepetService,
+              public applicationService: ApplicationService,
+              @Inject(WOWHEAD_URL) public wowheadUrl) {
+    this.battlePetSummary$ = this.battlepetService.battlepetSummary$();
   }
 }
