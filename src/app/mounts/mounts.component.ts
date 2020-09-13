@@ -1,9 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
-import { MountsService, MountSummary } from './mounts.service';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { ApplicationService } from '../application/application.service';
-import { wowHeadUrl } from '../util/constants';
 import { Observable, Subject } from 'rxjs';
-import { Profile, ProfileService } from '../login/profile.service';
+import { ProfileService } from '../profile/profile.service';
+import { Profile } from '../profile/profile';
+import { MountsService } from './mounts.service';
+import { MountSummary } from './mounts';
+import { WOWHEAD_URL } from '../shared/wowhead-url';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mounts',
@@ -12,7 +15,6 @@ import { Profile, ProfileService } from '../login/profile.service';
 })
 export class MountsComponent implements OnDestroy {
 
-  wowHeadUrl = wowHeadUrl;
   mountSummary$: Observable<MountSummary>;
   profile$: Observable<Profile>;
   showPlanner = false;
@@ -22,8 +24,9 @@ export class MountsComponent implements OnDestroy {
 
   constructor(private mountsService: MountsService,
               public applicationService: ApplicationService,
-              private profileService: ProfileService) {
-    this.mountSummary$ = this.mountsService.mountSummary$();
+              private profileService: ProfileService,
+              @Inject(WOWHEAD_URL) public  wowheadUrl) {
+    this.mountSummary$ = this.mountsService.mountSummary$().pipe(tap(summary => console.log(summary)));
     this.profile$ = profileService.profile$;
   }
 

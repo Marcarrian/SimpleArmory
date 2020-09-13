@@ -23,6 +23,8 @@ import { DropDirective } from './directives/drop.directive';
 import { MountsComponent } from './mounts/mounts.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProgressFormatterPipe } from './shared/pipe/progress-formatter.pipe';
+import { ProposalFieldComponent } from './login/proposal/proposal-field.component';
+import { WOWHEAD_URL, wowheadUrlProvider } from './shared/wowhead-url';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { ProgressFormatterPipe } from './shared/pipe/progress-formatter.pipe';
     DropDirective,
     MountsComponent,
     ProgressFormatterPipe,
+    ProposalFieldComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,12 @@ import { ProgressFormatterPipe } from './shared/pipe/progress-formatter.pipe';
     HttpClientModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: WOWHEAD_URL,
+      useFactory: wowheadUrlProvider,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

@@ -1,0 +1,6 @@
+<input (focus)="onFocus()" (blur)="onBlur()" [formControl]="textInput" type="text">
+<div *ngIf="showProposals" class="proposals">
+  <ul *ngFor="let proposal of filteredProposals">
+    <li (mousedown)="onProposalAccept$(proposal)">{{proposal}}</li>
+  </ul>
+</div>

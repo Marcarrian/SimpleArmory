@@ -1,55 +1,21 @@
 import { Injectable } from '@angular/core';
+import EuServers from '../../assets/data/servers.eu.json';
+import UsServers from '../../assets/data/servers.us.json';
+import { Realm } from './realm';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlizzardRealmService {
-  public BlizzardRealmService($http, $q, $log, $window) {
-    return {
 
-      getAllRealms: function () {
-        var defer = $q.defer();
+  constructor() {
+  }
 
-        $q.all([
-          $http.get('data/servers.us.json').then(function (data) {
-            console.log('Got realms for US');
-            return data;
-          }),
-          $http.get('data/servers.eu.json').then(function (data) {
-            console.log('Got realms for EU');
-            return data;
-          }),
-        ]).then(function (data) {
+  euRealms(): Realm[] {
+    return EuServers.realms.map(realm => ({...realm, region: 'eu'}));
+  }
 
-          // combine results here so that its clean to the callers
-          var allServers = [];
-          var server;
-
-          // US
-          for (var i = 0; i < data[0].data.realms.length; i++) {
-            server = data[0].data.realms[i];
-
-            // tag region
-            server.region = 'us';
-
-            allServers.push(server);
-          }
-
-          // EU
-          for (i = 0; i < data[1].data.realms.length; i++) {
-            server = data[1].data.realms[i];
-
-            // tag region
-            server.region = 'eu';
-
-            allServers.push(server);
-          }
-
-          defer.resolve(allServers);
-        });
-
-        return defer.promise;
-      },
-    };
+  usRealms(): Realm[] {
+    return UsServers.realms.map(realm => ({...realm, region: 'us'}));
   }
 }

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Character } from '../character/character';
 import { Observable } from 'rxjs';
 import { CharacterService } from '../character/character.service';
-import { ProfileService } from '../login/profile.service';
+import { ProfileService } from '../profile/profile.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,11 @@ export class HeaderComponent {
   realm: string;
   public isUsingDarkTheme = true; // TODO implement
 
-  constructor(public profileService: ProfileService, private characterService: CharacterService) {
+  constructor(public profileService: ProfileService,
+              private characterService: CharacterService,
+              router: Router) {
+    console.log(router.url);
+    console.log(window.location.href);
     this.character$ = characterService.character$;
     // TODO we shouldnt need character as a property of this component since we already have the data as an observable
     this.character$.subscribe(character => {
@@ -27,7 +32,7 @@ export class HeaderComponent {
   }
 
   getUrl(subSite): string {
-    let url = this.getBaseUrl(this.character);
+    let url = this.getBaseUrl();
     if (subSite !== '') {
       url += '/' + subSite;
     }
@@ -35,14 +40,14 @@ export class HeaderComponent {
     return url;
   }
 
-  private getBaseUrl(character: Character): string {
-    if (!character) {
+  private getBaseUrl(): string {
+    if (!this.character) {
       return '';
     }
 
-    return '/' + character.region.toLowerCase() + '/' +
-      character.realm.toLowerCase() + '/' +
-      character.name.toLowerCase();
+    return '/' + this.character.region.toLowerCase() + '/' +
+      this.character.realm.toLowerCase() + '/' +
+      this.character.name.toLowerCase();
   }
 
   toggleDarkTheme(): void {
@@ -57,20 +62,19 @@ export class HeaderComponent {
   }
 
   isActive(viewLocation: string, subMenu: boolean = false): boolean {
-    // // if its a submenu sea() === combinedUrl;rch, then just look for the location in the url
-    //     // // and call it good
-    //     // if (subMenu) {
-    //     //   return this.activatedRoute.snapshot.url.indexOf(viewLocation) > 0;
-    //     // }
-    //     //
-    //     // // otherwise, lets try to match it directly
-    //     // let combinedUrl = this.getBaseUrl(this.character);
-    //     // if (viewLocation !== '') {
-    //     //   combinedUrl += '/' + viewLocation;
-    //     // }
-    //     //
-    //     // return $location.path
-    return true;
+    // if its a submenu sea() === combinedUrl;rch, then just look for the location in the url
+    // and call it good
+    if (subMenu) {
+      return window.location.href.indexOf(viewLocation) > 0;
+    }
+
+    // otherwise, lets try to match it directly
+    let combinedUrl = this.getBaseUrl();
+    if (viewLocation !== '') {
+      combinedUrl += '/' + viewLocation;
+    }
+
+    return window.location.href.includes(combinedUrl);
   }
 
   guildName(): string {

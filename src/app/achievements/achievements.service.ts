@@ -4,9 +4,10 @@ import { combineLatest, EMPTY, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AchievementCatJson, AchievementItemJson, AchievementSubcatJson, AchievementSummary, AchievementSummaryCategory, AchievementSummarySubCategory, AchievementSupercatJson, ArmorystatsAchievement, ArmorystatsAchievementChildCriteria, ArmorystatsAchievementResponse, MyAchievement } from './achievement';
 import { switchMap } from 'rxjs/operators';
-import { Profile, ProfileService } from '../login/profile.service';
+import { ProfileService } from '../profile/profile.service';
 import AchievementsJson from '../../assets/data/achievements.json';
 import { armorystatsUrl } from '../util/constants';
+import { Profile } from '../profile/profile';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { PetService } from './pet.service';
+import { Observable } from 'rxjs';
+import { PetSummary } from './pets';
+import { ApplicationService } from '../application/application.service';
+import { WOWHEAD_URL } from '../shared/wowhead-url';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-companions',
@@ -7,18 +13,11 @@ import { Component } from '@angular/core';
 })
 export class CompanionsComponent {
 
-  constructor() {
-  }
+  companionPetSummary$: Observable<PetSummary>;
 
-  public CompanionsCtrl($scope, MountsAndPetsService, $window, SettingsService) {
-
-    $scope.settings = SettingsService;
-
-    // Analytics for page
-    $window.ga('send', 'pageview', 'Companions');
-
-    MountsAndPetsService.getItems('pets', 'pets', 'species').then(function (items) {
-      $scope.items = items;
-    });
+  constructor(private petService: PetService,
+              public applicationService: ApplicationService,
+              @Inject(WOWHEAD_URL) public wowheadUrl) {
+    this.companionPetSummary$ = this.petService.companionPetSummary$();
   }
 }

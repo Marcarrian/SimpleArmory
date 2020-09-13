@@ -1,0 +1,20 @@
+.proposals {
+  max-height: 200px;
+  overflow: auto;
+  background-color: palevioletred;
+
+  > ul {
+    margin: 0;
+    padding: 0;
+
+    > li {
+      list-style-type: none;
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        background-color: #D29D01;
+      }
+    }
+  }
+}

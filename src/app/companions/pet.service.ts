@@ -1,46 +1,55 @@
 import { Injectable } from '@angular/core';
-import { Character } from '../character/character';
 import { HttpClient } from '@angular/common/http';
-import { combineLatest, Observable, of } from 'rxjs';
-import { ProfileService } from '../profile/profile.service';
-import MountsJson from '../../assets/data/mounts.json';
-import { Category, Item, Subcategory } from '../model/category';
-import { armorystatsUrl } from '../util/constants';
-import { switchMap } from 'rxjs/operators';
 import { CharacterService } from '../character/character.service';
+import { combineLatest, Observable, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { Character } from '../character/character';
+import { armorystatsUrl } from '../util/constants';
+import { Pet, PetCollection, PetSummary } from './pets';
 import { Profile } from '../profile/profile';
-import { MountCollected, MountCollection, MountSummary } from './mounts';
+import { ProfileService } from '../profile/profile.service';
+import PetsJson from '../../assets/data/pets.json';
+import { Category, Item, Subcategory } from '../model/category';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MountsService {
+export class PetService {
+
+  // issues/53: Pets that we can ignore warning for because they are battle pets
+  private ignoredFoundPets = {
+    10708: true,
+    132785: true,
+    148065: true,
+    148068: true,
+    148069: true,
+  };
 
   constructor(private http: HttpClient,
-              private profileService: ProfileService,
-              private characterService: CharacterService) {
+              private characterService: CharacterService,
+              private profileService: ProfileService) {
+
   }
 
-  public mountSummary$(): Observable<MountSummary> {
-    const collectedMountsByCharacter$ = this.characterService.character$.pipe(
-      switchMap(character => this.collectedMounts$(character)),
-    );
+  public companionPetSummary$(): Observable<PetSummary> {
+    const collectedPetsByCharacter$ = this.characterService.character$
+      .pipe(switchMap(character => this.collectedPets$(character)));
     return combineLatest([
-      collectedMountsByCharacter$,
+      collectedPetsByCharacter$,
       this.profileService.profile$,
     ]).pipe(
-      switchMap(([collectedMounts, profile]) => this.createMountSummary$(collectedMounts, profile)),
+      switchMap(([collectedPets, profile]) => this.createPetSummary$(collectedPets, profile)),
     );
   }
 
-  private collectedMounts$(character: Character): Observable<MountCollection> {
-    return this.http.get<MountCollection>(`${armorystatsUrl}${character.region}/${character.realm}/${character.name}/collections/mounts`);
+  public collectedPets$(character: Character): Observable<PetCollection> {
+    return this.http.get<PetCollection>(`${armorystatsUrl}${character.region}/${character.realm}/${character.name}/collections/pets`);
   }
 
-  private createMountSummary$(collectedMounts: MountCollection, profile: Profile): Observable<MountSummary> {
+  private createPetSummary$(collectedPets: PetCollection, profile: Profile): Observable<PetSummary> {
     const isAlliance = profile.faction.type === 'ALLIANCE';
-    const mountSummary: MountSummary = {
-      collection: new Map<number, MountCollected>(),
+    const petSummary: PetSummary = {
+      collection: new Map<number, Pet>(),
       totalCollected: 0,
       totalPossible: 0,
       categories: [],
@@ -49,11 +58,11 @@ export class MountsService {
       isAlliance,
     };
 
-    collectedMounts.mounts.forEach(mountCollected => mountSummary.collection.set(mountCollected.mount.id, mountCollected));
+    collectedPets.pets.forEach(petCollected => petSummary.collection.set(+petCollected.species.id, petCollected));
 
-    MountsJson.forEach((category: any) => {
+    PetsJson.forEach((category: any) => {
       const cat: Category = {name: category.name, subcats: []};
-      mountSummary.categories.push(cat);
+      petSummary.categories.push(cat);
 
       category.subcats.forEach((subcategory: Subcategory) => {
           const subcat: Subcategory = {name: subcategory.name, items: []};
@@ -62,7 +71,7 @@ export class MountsService {
             const itm: Item = {...item};
             itm.link = this.determineItemLink(item, profile);
 
-            if (mountSummary.collection.get(+itm.ID)) {
+            if (petSummary.collection.get(+itm.ID)) {
               itm.collected = true;
             } // TODO if we dont have the mount then it surely can never show up as collected ye?
 
@@ -71,27 +80,28 @@ export class MountsService {
             //    2) Its still obtainable
             //    3) You meet the class restriction
             //    4) You meet the race restriction
-            let shouldShowMount = (itm.collected || !item.notObtainable);
+            const isPetCollected = itm.collected;
+            let shouldShowPet = (isPetCollected || !item.notObtainable);
 
             if (!this.allowedFactionOnItemMatchesProfileFaction(item, profile)) {
-              shouldShowMount = false;
+              shouldShowPet = false;
             }
 
             if (!this.allowedRaceOnItemMatchesProfileRace(item, profile)) {
-              shouldShowMount = false;
+              shouldShowPet = false;
             }
 
             if (!this.allowedClassOnItemMatchesProfileClass(item, profile)) {
-              shouldShowMount = false;
+              shouldShowPet = false;
             }
 
-            if (shouldShowMount) {
+            if (shouldShowPet) {
               subcat.items.push(itm);
-              if (itm.collected) {
-                mountSummary.totalCollected++;
-                mountSummary.collected.push(itm);
+              if (isPetCollected) {
+                petSummary.totalCollected++;
+                petSummary.collected.push(itm);
               }
-              mountSummary.totalPossible++;
+              petSummary.totalPossible++;
             }
           });
 
@@ -101,7 +111,7 @@ export class MountsService {
         },
       );
     });
-    return of(mountSummary);
+    return of(petSummary);
   }
 
   private determineItemLink(item: Item, profile: Profile): string {
@@ -146,4 +156,5 @@ export class MountsService {
     }
     return item.allowableClasses.find(allowableClass => allowableClass === profile.class) !== undefined;
   }
+
 }

@@ -21,6 +21,9 @@ const routes: Routes = [
   {
     path: 'admin/:area/:section?/:subsection?',
     component: AdminComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: 'admin',
@@ -33,6 +36,9 @@ const routes: Routes = [
   {
     path: ':region/:realm/:character/settings',
     component: SettingsComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character/achievements/:category',
@@ -44,14 +50,23 @@ const routes: Routes = [
   {
     path: ':region/:realm/:character/collectable/battlepets',
     component: BattlepetsComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character/calendar',
     component: CalendarComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character/collectable/companions',
     component: CompanionsComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character/collectable/mounts',
@@ -63,14 +78,23 @@ const routes: Routes = [
   {
     path: ':region/:realm/:character/collectable/toys',
     component: ToysComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character',
     component: OverviewComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: ':region/:realm/:character/reputation',
     component: ReputationComponent,
+    resolve: {
+      character: CharacterResolver,
+    },
   },
   {
     path: 'login',

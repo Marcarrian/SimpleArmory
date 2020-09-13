@@ -12,12 +12,6 @@ export class ProgressFormatterPipe implements PipeTransform {
 
     const percentage = completedAmount / possibleAmount * 100;
 
-    // if the percentage is low enough, don't print the numbers, just use the percentage
-    // TODO why?
-    if (percentage < 18) {
-      return percentage + '%';
-    }
-
     return '' + completedAmount + ' / ' + possibleAmount + ' (' + percentage + '%)';
   }
 

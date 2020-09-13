@@ -49,7 +49,7 @@
         <li class="dropdown">
           <a href="#" class="navbar-char-link dropdown-toggle">
             <img
-                *ngIf="profileService.profileMediaAvatarUrl$ | async as avatarUrl"
+                *ngIf="profileService.profileAvatarUrl$ | async as avatarUrl"
                 class="navbar-char-image"
                 [src]="avatarUrl"
             />
@@ -57,7 +57,7 @@
           </a>
           <ul class="dropdown-menu">
             <li class="signin-label">Signed in as</li>
-            <li><strong *ngIf="character$ | async; let character" class="signin-name">{{character.name}} @ {{character.realm}}</strong></li>
+            <li><strong *ngIf="character$ | async as character" class="signin-name">{{character.name}} @ {{character.realm}}</strong></li>
             <li role="separator" class="divider"></li>
             <li><a [href]="armoryUrl()" target="_blank">Armory profile</a></li>
             <li><a href="mailto:simplearmory@gmail.com?subject=Simple Armory Feedback">Contact</a></li>

@@ -15,9 +15,11 @@
       <h3 class="categoryHeader" *ngIf="category.name !== 'Mounts'">{{ category.name }}</h3>
       <div class="sect" *ngFor="let subcategory of category?.subcats">
         <h5 class="subCatHeader">{{ subcategory.name }}</h5>
-        <a target="_blank" href="//{{ wowHeadUrl }}/{{ item.link }}" class="thumbnail" *ngFor="let item of subcategory?.items" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">
-          <img [src]="applicationService.getImageSrc(item)">
-        </a>
+        <ng-container *ngFor="let item of subcategory?.items">
+          <a target="_blank" href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">
+            <img [src]="applicationService.getImageSrc(item)">
+          </a>
+        </ng-container>
       </div>
       <div class="clear"></div>
     </ng-container>
