@@ -1,26 +1,28 @@
-<!--<div class="container">-->
-<!--  <div class="page-header">-->
-<!--    <h2>-->
-<!--        Companions-->
-<!--    <div class="progress progressRight">-->
-<!--            <progressbar max="100" type="success"-->
-<!--      	  		value="percent(items.collected, items.possible)" >-->
-<!--      	  		<span>{{ achFormater(items.collected, items.possible) }}</span>-->
-<!--      	  	</progressbar>  	-->
-<!--        </div>-->
-<!--    </h2>        -->
-<!--  </div>-->
+<div class="container">
+  <div class="page-header">
+    <h2>
+      Companions
+      <div class="progress progressRight">
+        <!--            <progressbar max="100" type="success"-->
+        <!--      	  		value="percent(items.collected, items.possible)" >-->
+        <!--      	  		<span>{{ achFormater(items.collected, items.possible) }}</span>-->
+        <!--      	  	</progressbar>  	-->
+      </div>
+    </h2>
+  </div>
 
-<!--  <h3 class="categoryHeader" ng-repeat-start="category in items.categories">{{ category.name }}</h3>-->
-<!--   <div class="sect" ng-repeat="subCategory in category.subCategories">-->
-<!--		<h5 class="subCatHeader">{{ subCategory.name }}</h5>-->
-<!--		<div class="pbCell" ng-repeat="item in subCategory.items" >-->
-<!--		<a target="{{settings.anchorTarget}}"-->
-<!--            ng-href="//{{settings.WowHeadUrl}}/{{ item.link }}" class="thumbnail pbThumbnail" ng-class="{borderOn:!item.collected, borderOff:item.collected}">-->
-<!--        	<img ng-src="{{getImageSrc(item)}}">-->
-<!--      	</a>-->
-<!--        <div class="pbQual" style="{{ qualityToBackground(item) }}"></div>-->
-<!--      	</div>-->
-<!--   </div>-->
-<!--  <div class="clear" ng-repeat-end />-->
-<!--</div>-->
+  <ng-container *ngFor="let category of (companionPetSummary$ | async)?.categories">
+    <h3 class="categoryHeader">{{ category.name }}</h3>
+    <div class="sect" *ngFor="let subcategory of category.subcats">
+      <h5 class="subCatHeader">{{ subcategory.name }}</h5>
+      <div class="pbCell" *ngFor="let item of subcategory?.items">
+        <a target="_blank"
+           href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail pbThumbnail" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">
+          <img [src]="applicationService.getImageSrc(item)">
+        </a>
+        <!--        <div class="pbQual" style="{{ qualityToBackground(item) }}"></div>-->
+      </div>
+    </div>
+    <div class="clear"></div>
+  </ng-container>
+</div>
