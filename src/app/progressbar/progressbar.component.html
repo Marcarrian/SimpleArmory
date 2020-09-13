@@ -1,0 +1,7 @@
+<div class="container">
+  <div class="bar" [ngStyle]="{'width': barWidthPercentage + '%'}">
+    <span *ngIf="completed === undefined">{{total}}</span>
+    <span *ngIf="percentage >= minimumBarWidthPercentage">{{completed}} / {{total}} ({{percentage}}%)</span>
+    <span *ngIf="percentage < minimumBarWidthPercentage">{{percentage}}%</span>
+  </div>
+</div>

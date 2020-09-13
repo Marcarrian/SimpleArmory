@@ -25,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProgressFormatterPipe } from './shared/pipe/progress-formatter.pipe';
 import { ProposalFieldComponent } from './login/proposal/proposal-field.component';
 import { WOWHEAD_URL, wowheadUrlProvider } from './shared/wowhead-url';
+import { ProgressbarComponent } from './progressbar/progressbar.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { WOWHEAD_URL, wowheadUrlProvider } from './shared/wowhead-url';
     MountsComponent,
     ProgressFormatterPipe,
     ProposalFieldComponent,
+    ProgressbarComponent,
   ],
   imports: [
     BrowserModule,

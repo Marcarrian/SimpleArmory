@@ -25,7 +25,7 @@ export class MountsComponent implements OnDestroy {
   constructor(private mountsService: MountsService,
               public applicationService: ApplicationService,
               private profileService: ProfileService,
-              @Inject(WOWHEAD_URL) public  wowheadUrl) {
+              @Inject(WOWHEAD_URL) public wowheadUrl) {
     this.mountSummary$ = this.mountsService.mountSummary$().pipe(tap(summary => console.log(summary)));
     this.profile$ = profileService.profile$;
   }
@@ -77,7 +77,7 @@ export class MountsComponent implements OnDestroy {
     return '//wow.zamimg.com/images/wow/icons/tiny/' + boss.icon + '.gif';
   }
 
-  getStepTitle(step: any, isAlliance: boolean): string {
+  getStepTitle(step: any, isAlliance?: boolean): string {
     if (step.capital) {
       return step.title + (isAlliance ? 'Stormwind' : 'Orgrimmar');
     }

@@ -1,14 +1,14 @@
 <div class="container">
   <div class="page-header">
     <h2>
-      Mounts <small class="pbSmall"><input type="checkbox" id="planner" [ngModel]="showPlanner" ng-change="plannerChanged()"><label for="planner">Show Planner</label></small>
-      <div class="progress progressRight">
-        <!--        <progressbar max="100" type="success"-->
-        <!--                     value="percent(items.collected, items.possible)">-->
-        <!--          <span>{{ achFormater(items.collected, items.possible) }}</span>-->
-        <!--        </progressbar>-->
-      </div>
+      Mounts
+      <small class="pbSmall"><input type="checkbox" id="planner" [ngModel]="showPlanner" ng-change="plannerChanged()">
+        <label for="planner">Show Planner</label>
+      </small>
     </h2>
+    <app-progressbar
+        *ngIf="mountSummary$ | async as mountSummary" [completed]="mountSummary.totalCollected" [total]="mountSummary.totalPossible">
+    </app-progressbar>
   </div>
   <div *ngIf="!showPlanner">
     <ng-container *ngFor="let category of (mountSummary$ | async)?.categories">
@@ -46,7 +46,7 @@
             <tbody *ngFor="let boss of step?.bosses">
             <tr>
               <td class="mnt-plan-boss-col">{{boss.name}}</td>
-              <td class="mnt-plan-mount-col"><a *ngIf="boss.itemId" [ngClass]="anchorCss(boss)" target="_blank" href="//{{wowHeadUrl}}/item={{ boss.itemId }}">
+              <td class="mnt-plan-mount-col"><a *ngIf="boss.itemId" [ngClass]="anchorCss(boss)" target="_blank" href="//{{wowheadUrl}}/item={{ boss.itemId }}">
                 <img class="mnt-plan-icon" [src]="getPlanImageSrc(boss)">{{boss.mount}}</a></td>
             </tr>
             </tbody>
