@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { anchorTarget, wowHeadUrl } from '../util/constants';
-import { Category } from '../model/category';
+import { Component, Inject } from '@angular/core';
+import { anchorTarget } from '../util/constants';
 import { AchievementsService } from './achievements.service';
 import { AchievementSummary } from './achievement';
-import { concatMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { WOWHEAD_URL } from '../shared/wowhead-url';
 
 @Component({
   selector: 'app-achievements',
@@ -13,28 +13,20 @@ import { concatMap } from 'rxjs/operators';
 })
 export class AchievementsComponent {
 
-  wowHeadUrl = wowHeadUrl;
   anchorTarget = anchorTarget;
-  superCategory: string;
-  category: Category;
-  achievements: any;
+  superCategoryAcronym: string;
+  prettySupercategory: string;
 
-  achievementSummary: AchievementSummary;
+  achievementSummary$: Observable<AchievementSummary>;
 
-  constructor(activatedRoute: ActivatedRoute, private achievementService: AchievementsService) {
-    activatedRoute.data.pipe(
-      concatMap(data => this.achievementService.achievementSummary$(data.character)),
-    ).subscribe(achievementSummary => {
-      console.log(achievementSummary);
-      return this.achievementSummary = achievementSummary;
+  constructor(private achievementService: AchievementsService,
+              route: ActivatedRoute,
+              @Inject(WOWHEAD_URL) public wowheadUrl) {
+    route.paramMap.subscribe(params => {
+      this.superCategoryAcronym = params.get('category');
+      this.prettySupercategory = this.prettifySupercategory(this.superCategoryAcronym);
     });
-
-    this.superCategory = this.prettySuperCategory(this.category);
-    // get achieves
-
-    // AchievementsService.getAchievements().then(function (achievements) {
-    //   $scope.achievements = achievements[$scope.superCat];
-    // });
+    this.achievementSummary$ = this.achievementService.achievementSummary$();
   }
 
   getImageSrc(achievement): string {
@@ -66,50 +58,50 @@ export class AchievementsComponent {
   }
 
   // Maps url simplified name into the pretty name and the name we hash off of in the json
-  prettySuperCategory(supercat): string {
-    let prettyCatName = supercat;
+  private prettifySupercategory(acronym: string): string {
+    let prettyCategory = acronym;
 
-    switch (supercat) {
+    switch (acronym) {
       case 'character':
-        prettyCatName = 'Character';
+        prettyCategory = 'Character';
         break;
       case 'quests':
-        prettyCatName = 'Quests';
+        prettyCategory = 'Quests';
         break;
       case 'exploration':
-        prettyCatName = 'Exploration';
+        prettyCategory = 'Exploration';
         break;
       case 'pvp':
-        prettyCatName = 'Player vs. Player';
+        prettyCategory = 'Player vs. Player';
         break;
       case 'dungeons':
-        prettyCatName = 'Dungeons & Raids';
+        prettyCategory = 'Dungeons & Raids';
         break;
       case 'professions':
-        prettyCatName = 'Professions';
+        prettyCategory = 'Professions';
         break;
       case 'reputation':
-        prettyCatName = 'Reputation';
+        prettyCategory = 'Reputation';
         break;
       case 'events':
-        prettyCatName = 'World Events';
+        prettyCategory = 'World Events';
         break;
       case 'pets':
-        prettyCatName = 'Pet Battles';
+        prettyCategory = 'Pet Battles';
         break;
       case 'collections':
-        prettyCatName = 'Collections';
+        prettyCategory = 'Collections';
         break;
       case 'expansions':
-        prettyCatName = 'Expansion Features';
+        prettyCategory = 'Expansion Features';
         break;
       case 'legacy':
-        prettyCatName = 'Legacy';
+        prettyCategory = 'Legacy';
         break;
       case 'feats':
-        prettyCatName = 'Feats of Strength';
+        prettyCategory = 'Feats of Strength';
         break;
     }
-    return prettyCatName;
+    return prettyCategory;
   }
 }

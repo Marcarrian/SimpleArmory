@@ -1,12 +1,17 @@
 export interface AchievementSummary {
-  categories?: Map<string, AchievementSummaryCategory>;
+  supercategories?: Map<string, AchievementSummarySuperCategory>;
   possible: number;
   completed: number;
 }
 
+export interface AchievementSummarySuperCategory {
+  name: string;
+  categories: AchievementSummaryCategory[];
+}
+
 export interface AchievementSummaryCategory {
   name: string;
-  subcats?: AchievementSummarySubCategory[];
+  subcats: AchievementSummarySubCategory[];
 }
 
 export interface AchievementSummarySubCategory {

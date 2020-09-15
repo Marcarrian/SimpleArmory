@@ -2,7 +2,7 @@
   <div class="page-header">
     <h2>
       Mounts
-      <small class="pbSmall"><input type="checkbox" id="planner" [ngModel]="showPlanner" ng-change="plannerChanged()">
+      <small class="pbSmall"><input type="checkbox" id="planner" [ngModel]="showPlanner" (change)="plannerChanged()">
         <label for="planner">Show Planner</label>
       </small>
     </h2>
@@ -21,7 +21,6 @@
           </a>
         </ng-container>
       </div>
-      <div class="clear"></div>
     </ng-container>
   </div>
   <div *ngIf="showPlanner && plannerReturned && planner.length > 0">

@@ -26,7 +26,7 @@ export class MountsComponent implements OnDestroy {
               public applicationService: ApplicationService,
               private profileService: ProfileService,
               @Inject(WOWHEAD_URL) public wowheadUrl) {
-    this.mountSummary$ = this.mountsService.mountSummary$().pipe(tap(summary => console.log(summary)));
+    this.mountSummary$ = this.mountsService.mountSummary$();
     this.profile$ = profileService.profile$;
   }
 
