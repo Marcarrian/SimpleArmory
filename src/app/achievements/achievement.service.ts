@@ -13,7 +13,7 @@ import { CharacterService } from '../character/character.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AchievementsService {
+export class AchievementService {
 
   fakeCompletionTime = 312;
 
@@ -57,8 +57,6 @@ export class AchievementsService {
     const completedAchievements = new Map<number, number>();
     const fulfilledCriteria = new Map<string, boolean>();
     const found = new Map<number, boolean>();
-    let totalFeatsOfStrength = 0;
-    let totalLegacy = 0;
 
     // Build up lookup for achievements that character has completed
     armorystatsAchievementResponse.achievements.forEach((armorystatsAchievement: ArmorystatsAchievement) => {
@@ -81,7 +79,12 @@ export class AchievementsService {
       let possibleCount = 0;
       let completedCount = 0;
 
-      const mySupercat: AchievementSummarySuperCategory = {name: supercat.name, categories: []};
+      const mySupercat: AchievementSummarySuperCategory = {
+        name: supercat.name,
+        categories: [],
+        completed: 0,
+        possible: 0,
+      };
 
       supercat.cats.forEach((cat: AchievementCatJson) => {
         const myCat: AchievementSummaryCategory = {name: cat.name, subcats: []};
@@ -109,11 +112,8 @@ export class AchievementsService {
 
               // if this is feats of strength then I want to keep a seperate count for that
               // since its not a percentage thing
-              if (supercat.name === 'Feats of Strength') {
-                totalFeatsOfStrength++;
-              }
-              else if (supercat.name === 'Legacy') {
-                totalLegacy++;
+              if (supercat.name === 'Feats of Strength' || supercat.name === 'Legacy') {
+                mySupercat.possible++;
               }
             }
             else if (achievementJson.criteria) {
@@ -138,10 +138,12 @@ export class AchievementsService {
               (!achievementJson.side || achievementJson.side === profile.side)) {
               possibleCount++;
               achievementSummary.possible++;
+              mySupercat.possible++;
 
               if (myAchievement.completed) {
                 completedCount++;
                 achievementSummary.completed++;
+                mySupercat.completed++;
               }
 
               // if we haven't already added it, then this is one that should show up in the page of achievements

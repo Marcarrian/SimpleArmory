@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { anchorTarget } from '../util/constants';
-import { AchievementsService } from './achievements.service';
+import { AchievementService } from './achievement.service';
 import { AchievementSummary } from './achievement';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -19,7 +19,7 @@ export class AchievementsComponent {
 
   achievementSummary$: Observable<AchievementSummary>;
 
-  constructor(private achievementService: AchievementsService,
+  constructor(private achievementService: AchievementService,
               route: ActivatedRoute,
               @Inject(WOWHEAD_URL) public wowheadUrl) {
     route.paramMap.subscribe(params => {

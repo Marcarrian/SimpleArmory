@@ -7,6 +7,8 @@ export interface AchievementSummary {
 export interface AchievementSummarySuperCategory {
   name: string;
   categories: AchievementSummaryCategory[];
+  possible: number;
+  completed: number;
 }
 
 export interface AchievementSummaryCategory {

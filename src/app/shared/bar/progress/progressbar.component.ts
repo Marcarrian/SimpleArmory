@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-progressbar',
@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 // TODO
 // animations
 // round corners on right side when 100%
-export class ProgressbarComponent implements OnInit {
+export class ProgressbarComponent implements OnInit, OnChanges {
 
   @Input()
   completed: number;
@@ -24,13 +24,11 @@ export class ProgressbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  public ngOnChanges(): void { // TODO navigating the same url doesn't destroy the component and thus not initialize it again
     if (this.completed > this.total) {
       throw new Error(`completed amount ${this.completed} cannot be larger than total amount ${this.total}.`);
-    }
-
-    if (this.completed === undefined) {
-      this.barWidthPercentage = 100;
-      return;
     }
 
     this.percentage = Math.trunc(this.completed / this.total * 100);

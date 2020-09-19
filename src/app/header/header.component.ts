@@ -18,6 +18,7 @@ export class HeaderComponent {
   character: Character;
   realm: string;
   public isUsingDarkTheme = true; // TODO implement
+  baseUrl = '';
 
   constructor(public profileService: ProfileService,
               private characterService: CharacterService,
@@ -27,27 +28,18 @@ export class HeaderComponent {
     this.character$ = characterService.character$;
     // TODO we shouldnt need character as a property of this component since we already have the data as an observable
     this.character$.subscribe(character => {
+      this.baseUrl = character.region + '/' + character.realm + '/' + character.name;
       this.character = character;
     });
   }
 
   getUrl(subSite): string {
-    let url = this.getBaseUrl();
+    let url = this.baseUrl;
     if (subSite !== '') {
       url += '/' + subSite;
     }
 
     return url;
-  }
-
-  private getBaseUrl(): string {
-    if (!this.character) {
-      return '';
-    }
-
-    return '/' + this.character.region.toLowerCase() + '/' +
-      this.character.realm.toLowerCase() + '/' +
-      this.character.name.toLowerCase();
   }
 
   toggleDarkTheme(): void {
@@ -69,7 +61,7 @@ export class HeaderComponent {
     }
 
     // otherwise, lets try to match it directly
-    let combinedUrl = this.getBaseUrl();
+    let combinedUrl = this.baseUrl;
     if (viewLocation !== '') {
       combinedUrl += '/' + viewLocation;
     }
@@ -87,9 +79,8 @@ export class HeaderComponent {
 
   armoryUrl(): string {
     if (this.character) {
-      const c = this.character;
       return window.location.protocol + '//' +
-        'worldofwarcraft.com/character/' + c.region + '/' + this.realm + '/' + c.name.toLowerCase();
+        'worldofwarcraft.com/character/' + this.character.region + '/' + this.character.realm + '/' + this.character.name.toLowerCase();
     }
 
     return '#';

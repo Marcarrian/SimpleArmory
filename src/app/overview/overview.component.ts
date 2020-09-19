@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AchievementService } from '../achievements/achievement.service';
+import { Observable } from 'rxjs';
+import { AchievementSummary } from '../achievements/achievement';
 
 @Component({
   selector: 'app-overview',
@@ -7,18 +10,9 @@ import { Component } from '@angular/core';
 })
 export class OverviewComponent {
 
-  constructor() {
-  }
+  achievementSummary$: Observable<AchievementSummary>;
 
-  public OverviewCtrl($scope, AchievementsService, $location, $window) {
-
-    // Analytics for page
-    $window.ga('send', 'pageview', 'Overview');
-
-    AchievementsService.getAchievements().then(function (achievements) {
-      $scope.achievements = achievements;
-    });
-
-    $scope.baseUrl = '#' + $location.$$path;
+  constructor(private achievementService: AchievementService) {
+    this.achievementSummary$ = this.achievementService.achievementSummary$();
   }
 }

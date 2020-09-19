@@ -1,30 +1,28 @@
 <div class="container">
-  <div class="page-header">
-    <h2>
-      Achievements <small>{{prettySupercategory}}</small>
-      <div class="progress progressRight">
-        <!--        <progressbar max="100" type="success"-->
-        <!--                     value="superCat == 'Feats of Strength'  || superCat == 'Legacy' ? 100 : percent(achievements.completed, achievements.possible)">-->
-        <!--          <span *ngIf="!(superCategory == 'Feats of Strength' || superCategory == 'Legacy')">{{ achFormater(achievements.completed, achievements.possible) }}</span>-->
-        <!--          <span *ngIf="superCategory === 'Feats of Strength'">{{ achievements.foSTotal }}</span>-->
-        <!--          <span *ngIf="superCategory === 'Legacy'">{{ achievements.legacyTotal }}</span>-->
-        <!--        </progressbar>-->
-      </div>
-    </h2>
-  </div>
-
-  <ng-container *ngFor="let category of (achievementSummary$ | async)?.supercategories.get(prettySupercategory).categories">
-    <h3 class="categoryHeader" *ngIf="category.name !== prettySupercategory">{{ category.name }}</h3>
-    <div class="sect" *ngFor="let subcategory of category.subcats">
-      <h5 class="subCatHeader">{{ subcategory.name }}</h5>
-
-      <a [target]="anchorTarget"
-         href="//{{wowheadUrl}}/achievement={{achievement.id}}"
-         class="thumbnail" ng-attr-rel="{{achievement.rel}}"
-         *ngFor="let achievement of subcategory.achievements"
-         [ngClass]="{borderOn:!achievement.completed, borderOff:achievement.completed}">
-        <img [src]="getImageSrc(achievement)">
-      </a>
+  <ng-container *ngIf="(achievementSummary$ | async)?.supercategories.get(prettySupercategory) as superCategory">
+    <div class="page-header">
+      <h2>Achievements <small>{{prettySupercategory}}</small></h2>
+      <ng-container *ngIf="superCategory.name === 'Feats of Strength' || superCategory.name === 'Legacy'; else progressbar">
+        <app-bar [total]="superCategory.possible"></app-bar>
+      </ng-container>
+      <ng-template #progressbar>
+        <app-progressbar [completed]="superCategory.completed" [total]="superCategory.possible"></app-progressbar>
+      </ng-template>
     </div>
+
+    <ng-container *ngFor="let category of superCategory.categories">
+      <h3 class="categoryHeader" *ngIf="category.name !== prettySupercategory">{{ category.name }}</h3>
+      <div class="sect" *ngFor="let subcategory of category.subcats">
+        <h5 class="subCatHeader">{{ subcategory.name }}</h5>
+
+        <a [target]="anchorTarget"
+           href="//{{wowheadUrl}}/achievement={{achievement.id}}"
+           class="thumbnail" ng-attr-rel="{{achievement.rel}}"
+           *ngFor="let achievement of subcategory.achievements"
+           [ngClass]="{borderOn:!achievement.completed, borderOff:achievement.completed}">
+          <img [src]="getImageSrc(achievement)">
+        </a>
+      </div>
+    </ng-container>
   </ng-container>
 </div>
