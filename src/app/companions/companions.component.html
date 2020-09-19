@@ -1,28 +1,38 @@
-<div class="container">
-  <div class="page-header">
-    <h2>
-      Companions
-      <div class="progress progressRight">
-        <!--            <progressbar max="100" type="success"-->
-        <!--      	  		value="percent(items.collected, items.possible)" >-->
-        <!--      	  		<span>{{ achFormater(items.collected, items.possible) }}</span>-->
-        <!--      	  	</progressbar>  	-->
-      </div>
-    </h2>
-  </div>
+<!--<div class="container">-->
+<!--  <header class="page-header">-->
+<!--    <h2>Companions</h2>-->
+<!--    <app-progressbar-->
+<!--        *ngIf="companionPetSummary$ | async as companionPetSummary" [completed]="companionPetSummary.totalCollected" [total]="companionPetSummary.totalPossible">-->
+<!--    </app-progressbar>-->
+<!--  </header>-->
 
-  <ng-container *ngFor="let category of (companionPetSummary$ | async)?.categories">
-    <h3 class="categoryHeader">{{ category.name }}</h3>
-    <div class="sect" *ngFor="let subcategory of category.subcats">
-      <h5 class="subCatHeader">{{ subcategory.name }}</h5>
-      <div class="pbCell" *ngFor="let item of subcategory?.items">
-        <a target="_blank"
-           href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail pbThumbnail" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">
-          <img [src]="applicationService.getImageSrc(item)">
+<!--  <ng-container *ngFor="let category of (companionPetSummary$ | async)?.categories">-->
+<!--    <h3 class="categoryHeader">{{ category.name }}</h3>-->
+<!--    <div class="sect" *ngFor="let subcategory of category.subcats">-->
+<!--      <h5 class="subCatHeader">{{ subcategory.name }}</h5>-->
+<!--      <div class="pbCell" *ngFor="let item of subcategory?.items">-->
+<!--        <a target="_blank"-->
+<!--           href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail pbThumbnail" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">-->
+<!--          <img [src]="applicationService.getImageSrc(item)">-->
+<!--        </a>-->
+<!--        &lt;!&ndash;        <div class="pbQual" style="{{ qualityToBackground(item) }}"></div>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="clear"></div>-->
+<!--  </ng-container>-->
+<!--</div>-->
+<ng-container *ngIf="companionPetSummary$ | async as companionPetSummary">
+  <app-summary [name]="'Companions'"
+               [categories]="companionPetSummary.categories"
+               [totalCollected]="companionPetSummary.totalCollected"
+               [totalPossible]="companionPetSummary.totalPossible">
+    <ng-template #subcategoryTemplate let-subcategory>
+      <ng-container *ngFor="let item of subcategory.items">
+        <a target="_blank" href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail">
+          <img [src]="applicationService.getImageSrc(item)" alt="">
         </a>
-        <!--        <div class="pbQual" style="{{ qualityToBackground(item) }}"></div>-->
-      </div>
-    </div>
-    <div class="clear"></div>
-  </ng-container>
-</div>
+      </ng-container>
+    </ng-template>
+  </app-summary>
+</ng-container>
+

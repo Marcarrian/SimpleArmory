@@ -1,77 +1,51 @@
-<div class="container">
-  <div class="page-header">
-    <h2>
-      Mounts
-      <small class="pbSmall"><input type="checkbox" id="planner" [ngModel]="showPlanner" (change)="plannerChanged()">
-        <label for="planner">Show Planner</label>
-      </small>
-    </h2>
-    <app-progressbar
-        *ngIf="mountSummary$ | async as mountSummary" [completed]="mountSummary.totalCollected" [total]="mountSummary.totalPossible">
-    </app-progressbar>
-  </div>
-  <div *ngIf="!showPlanner">
-    <ng-container *ngFor="let category of (mountSummary$ | async)?.categories">
-      <h3 class="categoryHeader" *ngIf="category.name !== 'Mounts'">{{ category.name }}</h3>
-      <div class="sect" *ngFor="let subcategory of category?.subcats">
-        <h5 class="subCatHeader">{{ subcategory.name }}</h5>
-        <ng-container *ngFor="let item of subcategory?.items">
-          <a target="_blank" href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">
-            <img [src]="applicationService.getImageSrc(item)">
-          </a>
-        </ng-container>
-      </div>
-    </ng-container>
-  </div>
-  <div *ngIf="showPlanner && plannerReturned && planner.length > 0">
-    <table class="table table-condensed">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Step</th>
-        <th class="mnt-plan-boss-col">Boss</th>
-        <th class="mnt-plan-mount-col" style="padding-left:0px;">Mount</th>
-        <th>Notes</th>
-      </tr>
-      </thead>
-      <tbody *ngFor="let step of planner; index as i;">
-      <tr>
-        <td>{{i + 1}}</td>
-        <ng-container *ngIf="profile$ | async; let profile;">
-          <td><img [src]="getPlanStepImageSrc(step, profile.side === 'A')" *ngIf="getPlanStepImageSrc(step, profile.side === 'A') !== ''" class="mnt-icon-step"/>{{getStepTitle(step)}}</td>
-        </ng-container>
-        <td colspan="2">
-          <table width="100%">
-            <tbody *ngFor="let boss of step?.bosses">
-            <tr>
-              <td class="mnt-plan-boss-col">{{boss.name}}</td>
-              <td class="mnt-plan-mount-col"><a *ngIf="boss.itemId" [ngClass]="anchorCss(boss)" target="_blank" href="//{{wowheadUrl}}/item={{ boss.itemId }}">
-                <img class="mnt-plan-icon" [src]="getPlanImageSrc(boss)">{{boss.mount}}</a></td>
-            </tr>
-            </tbody>
-          </table>
-        </td>
-        <td>
-          {{step.notes}}
-          <table>
-            <tbody>
-            <ng-container *ngFor="let boss of step?.bosses">
-              <tr>
-                <td>{{boss.note}}&nbsp;</td>
-              </tr>
-            </ng-container>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div *ngIf="showPlanner && plannerReturned && planner.length == 0">
-    <img src="images/success.png"/>
-    <p>
-      Grats! You've farmed all the mounts. <br/>
-      You should post on <a href="http://reddit.com/r/wow">/r/wow</a>!
-    </p>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <header class="page-header">-->
+<!--    <h2>Mounts</h2>-->
+<!--    <small class="pbSmall"><input type="checkbox" id="planner" [ngModel]="showPlanner" (change)="plannerChanged()">-->
+<!--      <label for="planner">Show Planner</label>-->
+<!--    </small>-->
+<!--    <app-progressbar-->
+<!--        *ngIf="mountSummary$ | async as mountSummary" [completed]="mountSummary.totalCollected" [total]="mountSummary.totalPossible">-->
+<!--    </app-progressbar>-->
+<!--  </header>-->
+<!--  <div *ngIf="!showPlanner" class="categories">-->
+<!--    <ng-container *ngFor="let category of (mountSummary$ | async)?.categories">-->
+<!--      <h3 *ngIf="category.name !== 'Mounts'">{{ category.name }}</h3>-->
+<!--      <section class="category">-->
+<!--        <div class="subcategory" *ngFor="let subcategory of category?.subcats">-->
+<!--          <h5>{{ subcategory.name }}</h5>-->
+<!--          <ng-container *ngFor="let item of subcategory?.items">-->
+<!--            <a target="_blank" href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail">-->
+<!--              <img [src]="applicationService.getImageSrc(item)" alt="">-->
+<!--            </a>-->
+<!--          </ng-container>-->
+<!--        </div>-->
+<!--      </section>-->
+<!--    </ng-container>-->
+<!--  </div>-->
+<!--  <div *ngIf="showPlanner && plannerReturned && planner.length > 0">-->
+<!--    <app-mounts-planner></app-mounts-planner>-->
+<!--  </div>-->
+
+<!--  <div *ngIf="showPlanner && plannerReturned && planner.length == 0">-->
+<!--    <img src="images/success.png" alt=""/>-->
+<!--    <p>-->
+<!--      Grats! You've farmed all the mounts. <br/>-->
+<!--      You should post on <a href="http://reddit.com/r/wow">/r/wow</a>!-->
+<!--    </p>-->
+<!--  </div>-->
+<!--</div>-->
+<ng-container *ngIf="mountSummary$ | async as mountSummary">
+  <app-summary [name]="'Mounts'"
+               [categories]="mountSummary.categories"
+               [totalPossible]="mountSummary.totalPossible"
+               [totalCollected]="mountSummary.totalCollected">
+    <ng-template #subcategoryTemplate let-subcategory>
+      <ng-container *ngFor="let item of subcategory.items">
+        <a target="_blank" href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail">
+          <img [src]="applicationService.getImageSrc(item)" alt="">
+        </a>
+      </ng-container>
+    </ng-template>
+  </app-summary>
+</ng-container>

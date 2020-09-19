@@ -1,0 +1,21 @@
+<div class="container">
+  <header class="page-header">
+    <h2>{{name}}</h2>
+    <app-progressbar [completed]="totalCollected" [total]="totalPossible"></app-progressbar>
+  </header>
+
+  <div class="categories">
+    <ng-container *ngFor="let category of categories">
+      <h3 *ngIf="category.name !== name">{{ category.name }}</h3>
+      <section class="category">
+        <div class="subcategory" *ngFor="let subcategory of category.subcats">
+          <h5>{{ subcategory.name }}</h5>
+          <ng-container
+              [ngTemplateOutlet]="subcategoryTemplateRef"
+              [ngTemplateOutletContext]="{$implicit: subcategory}">
+          </ng-container>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</div>

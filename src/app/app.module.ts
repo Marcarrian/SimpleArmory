@@ -27,6 +27,8 @@ import { ProposalFieldComponent } from './login/proposal/proposal-field.componen
 import { WOWHEAD_URL, wowheadUrlProvider } from './shared/wowhead-url';
 import { BarComponent } from './shared/bar/bar.component';
 import { ProgressbarComponent } from './shared/bar/progress/progressbar.component';
+import { MountsPlannerComponent } from './mounts/planner/mounts-planner.component';
+import { SummaryComponent } from './summary/summary.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { ProgressbarComponent } from './shared/bar/progress/progressbar.componen
     ProposalFieldComponent,
     BarComponent,
     ProgressbarComponent,
+    MountsPlannerComponent,
+    SummaryComponent,
   ],
   imports: [
     BrowserModule,

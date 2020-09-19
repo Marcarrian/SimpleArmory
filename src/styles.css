@@ -92,13 +92,6 @@ body {
 
 /* ## Header ############################### */
 
-.page-header {
-  margin-top: 0px;
-  margin-bottom: 10px;
-  padding-bottom: 0px;
-  overflow: hidden;
-}
-
 .signin-label {
   color: #767676;
   padding: 3px 20px;
@@ -109,15 +102,6 @@ body {
   font-weight: 600;
   padding: 3px 20px;
   white-space: nowrap;
-}
-
-.thumbnail {
-  padding: 0px;
-  width: 36px;
-  height: 36px;
-  float: left;
-  margin-bottom: 5px;
-  margin-top: 0px;
 }
 
 .pbThumbnail {
