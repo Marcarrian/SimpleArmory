@@ -1,3 +1,5 @@
+import { Subcategory } from '../model/category';
+
 export interface AchievementSummary {
   supercategories?: Map<string, AchievementSummarySuperCategory>;
   possible: number;
@@ -13,12 +15,7 @@ export interface AchievementSummarySuperCategory {
 
 export interface AchievementSummaryCategory {
   name: string;
-  subcats: AchievementSummarySubCategory[];
-}
-
-export interface AchievementSummarySubCategory {
-  name: string;
-  achievements?: MyAchievement[];
+  subcats: Subcategory[];
 }
 
 export interface MyAchievement extends AchievementItemJson {

@@ -12,11 +12,12 @@ import { BattlepetService } from './battlepet.service';
 })
 export class BattlepetsComponent {
 
-  battlePetSummary$: Observable<PetSummary>;
+  battlepetSummary$: Observable<PetSummary>;
+  showLevel = true;
 
   constructor(private battlepetService: BattlepetService,
               public applicationService: ApplicationService,
               @Inject(WOWHEAD_URL) public wowheadUrl) {
-    this.battlePetSummary$ = this.battlepetService.battlepetSummary$();
+    this.battlepetSummary$ = this.battlepetService.battlepetSummary$();
   }
 }

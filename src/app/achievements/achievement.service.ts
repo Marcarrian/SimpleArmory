@@ -2,20 +2,20 @@ import { Injectable } from '@angular/core';
 import { Character } from '../character/character';
 import { combineLatest, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { AchievementCatJson, AchievementItemJson, AchievementSubcatJson, AchievementSummary, AchievementSummaryCategory, AchievementSummarySubCategory, AchievementSummarySuperCategory, AchievementSupercatJson, ArmorystatsAchievement, ArmorystatsAchievementChildCriteria, ArmorystatsAchievementResponse, MyAchievement } from './achievement';
+// tslint:disable-next-line:max-line-length
+import { AchievementCatJson, AchievementItemJson, AchievementSubcatJson, AchievementSummary, AchievementSummaryCategory, AchievementSummarySuperCategory, AchievementSupercatJson, ArmorystatsAchievement, ArmorystatsAchievementChildCriteria, ArmorystatsAchievementResponse, MyAchievement } from './achievement';
 import { switchMap } from 'rxjs/operators';
 import { ProfileService } from '../profile/profile.service';
 import AchievementsJson from '../../assets/data/achievements.json';
 import { armorystatsUrl } from '../util/constants';
 import { Profile } from '../profile/profile';
 import { CharacterService } from '../character/character.service';
+import { Subcategory } from '../model/category';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AchievementService {
-
-  fakeCompletionTime = 312;
 
   // ignore achievements that shouldn't show up in the UI
   ignoredFoundAchievements = {
@@ -76,10 +76,7 @@ export class AchievementService {
     });
 
     AchievementsJson.supercats.forEach((supercat: AchievementSupercatJson) => {
-      let possibleCount = 0;
-      let completedCount = 0;
-
-      const mySupercat: AchievementSummarySuperCategory = {
+      const supercatResult: AchievementSummarySuperCategory = {
         name: supercat.name,
         categories: [],
         completed: 0,
@@ -87,10 +84,10 @@ export class AchievementService {
       };
 
       supercat.cats.forEach((cat: AchievementCatJson) => {
-        const myCat: AchievementSummaryCategory = {name: cat.name, subcats: []};
+        const categoryResult: AchievementSummaryCategory = {name: cat.name, subcats: []};
 
         cat.subcats.forEach((subcat: AchievementSubcatJson) => {
-          const mySubCat: AchievementSummarySubCategory = {name: subcat.name, achievements: []};
+          const subcategoryResult: Subcategory = {name: subcat.name, achievements: []};
 
           subcat.items.forEach((achievementJson: AchievementItemJson) => {
             found.set(+achievementJson.id, true);
@@ -102,18 +99,18 @@ export class AchievementService {
 
             // TODO debug option?
             // Hack: until blizz fixes api, don't stamp with date
-            if (myAchievement.completed && myAchievement.completed !== this.fakeCompletionTime) {
+            if (myAchievement.completed && myAchievement.completed) {
               myAchievement.rel = 'who=' + name + '&when=' + myAchievement.completed;
             }
 
             if (myAchievement.completed) {
               added = true;
-              mySubCat.achievements.push(myAchievement);
+              subcategoryResult.achievements.push(myAchievement);
 
-              // if this is feats of strength then I want to keep a seperate count for that
+              // if this is `Feats of Strength` or `Legacy` then I want to keep a separate count for that
               // since its not a percentage thing
               if (supercat.name === 'Feats of Strength' || supercat.name === 'Legacy') {
-                mySupercat.possible++;
+                supercatResult.possible++;
               }
             }
             else if (achievementJson.criteria) {
@@ -136,33 +133,31 @@ export class AchievementService {
             // Update counts proper
             if (supercat.name !== 'Feats of Strength' && supercat.name !== 'Legacy' && !achievementJson.notObtainable &&
               (!achievementJson.side || achievementJson.side === profile.side)) {
-              possibleCount++;
               achievementSummary.possible++;
-              mySupercat.possible++;
+              supercatResult.possible++;
 
               if (myAchievement.completed) {
-                completedCount++;
                 achievementSummary.completed++;
-                mySupercat.completed++;
+                supercatResult.completed++;
               }
 
               // if we haven't already added it, then this is one that should show up in the page of achievements
               // so add it
               if (!added) {
-                mySubCat.achievements.push(myAchievement);
+                subcategoryResult.achievements.push(myAchievement);
               }
             }
           });
 
-          if (mySubCat.achievements.length > 0) {
-            myCat.subcats.push(mySubCat);
+          if (subcategoryResult.achievements.length > 0) {
+            categoryResult.subcats.push(subcategoryResult);
           }
         });
 
-        mySupercat.categories.push(myCat);
+        supercatResult.categories.push(categoryResult);
       });
 
-      achievementSummary.supercategories.set(mySupercat.name, mySupercat);
+      achievementSummary.supercategories.set(supercatResult.name, supercatResult);
     });
 
     return of(achievementSummary);

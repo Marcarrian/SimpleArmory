@@ -1,14 +1,31 @@
 <div class="container">
-  <!-- Progress Overview -->
   <div class="page-header">
     <h2>Progress Overview</h2>
   </div>
 
   <strong class="desc">Total Complete</strong>
-  <app-progressbar *ngIf="achievementSummary$ | async as achievementSummary" [completed]="achievementSummary.completed" [total]="achievementSummary.possible"></app-progressbar>
+  <app-progressbar *ngIf="achievementSummary$ | async as achievementSummary"
+                   [completed]="achievementSummary.completed"
+                   [total]="achievementSummary.possible">
+  </app-progressbar>
 
-  <strong class="desc">Total Complete</strong>
-  <app-progressbar *ngIf="achievementSummary$ | async as achievementSummary" [completed]="achievementSummary.completed" [total]="achievementSummary.possible"></app-progressbar>
+  <strong class="desc">Character</strong>
+  <app-progressbar *ngIf="(achievementSummary$ | async)?.supercategories.get('Character') as superCategory"
+                   [completed]="superCategory.completed"
+                   [total]="superCategory.possible">
+  </app-progressbar>
+
+  <strong class="desc">Quests</strong>
+  <app-progressbar *ngIf="(achievementSummary$ | async)?.supercategories.get('Quests') as superCategory"
+                   [completed]="superCategory.completed"
+                   [total]="superCategory.possible">
+  </app-progressbar>
+
+  <strong class="desc">Exploration</strong>
+  <app-progressbar *ngIf="(achievementSummary$ | async)?.supercategories.get('Exploration') as superCategory"
+                   [completed]="superCategory.completed"
+                   [total]="superCategory.possible">
+  </app-progressbar>
 
 
   <!--  <div class="achGrid">-->

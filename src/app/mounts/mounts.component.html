@@ -37,9 +37,8 @@
 <!--</div>-->
 <ng-container *ngIf="mountSummary$ | async as mountSummary">
   <app-summary [name]="'Mounts'"
-               [categories]="mountSummary.categories"
-               [totalPossible]="mountSummary.totalPossible"
-               [totalCollected]="mountSummary.totalCollected">
+               [categories]="mountSummary.categories">
+
     <ng-template #subcategoryTemplate let-subcategory>
       <ng-container *ngFor="let item of subcategory.items">
         <a target="_blank" href="//{{ wowheadUrl }}/{{ item.link }}" class="thumbnail">
@@ -47,5 +46,10 @@
         </a>
       </ng-container>
     </ng-template>
+
+    <ng-template #barTemplate>
+      <app-progressbar [completed]="mountSummary.totalCollected" [total]="mountSummary.totalPossible"></app-progressbar>
+    </ng-template>
+
   </app-summary>
 </ng-container>

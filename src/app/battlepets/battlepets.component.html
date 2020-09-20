@@ -1,29 +1,49 @@
-<div class="container">
-  <div class="page-header">
-    <h2>
-      Battle Pets <small class="pbSmall"><input type="checkbox" id="showlevels" ng-model="showLevel"><label for="showlevels">Show levels and breeds</label></small>
-      <div class="progress progressRight">
-        <!--            <progressbar max="100" type="success"-->
-        <!--      	  		value="percent(items.collected, items.possible)" >-->
-        <!--      	  		<span>{{ achFormater(items.collected, items.possible) }}</span>-->
-        <!--      	  	</progressbar>  	-->
-      </div>
-    </h2>
-  </div>
+<!--<div class="container">-->
+<!--  <div class="page-header">-->
+<!--    <h2>-->
+<!--      Battle Pets <small class="pbSmall"><input type="checkbox" id="showlevels" ng-model="showLevel"><label for="showlevels">Show levels and breeds</label></small>-->
+<!--      <div class="progress progressRight">-->
+<!--        &lt;!&ndash;            <progressbar max="100" type="success"&ndash;&gt;-->
+<!--        &lt;!&ndash;      	  		value="percent(items.collected, items.possible)" >&ndash;&gt;-->
+<!--        &lt;!&ndash;      	  		<span>{{ achFormater(items.collected, items.possible) }}</span>&ndash;&gt;-->
+<!--        &lt;!&ndash;      	  	</progressbar>  	&ndash;&gt;-->
+<!--      </div>-->
+<!--    </h2>-->
+<!--  </div>-->
 
-  <ng-container *ngFor="let category of (battlePetSummary$ | async)?.categories">
-    <h3 class="categoryHeader">{{ category.name }}</h3>
-    <div class="sect" *ngFor="let subcategory of category.subcats">
-      <h5 class="subCatHeader">{{ subcategory.name }}</h5>
-      <div class="pbCell" *ngFor="let item of subcategory.items">
+<!--  <ng-container *ngFor="let category of (battlepetSummary$ | async)?.categories">-->
+<!--    <h3 class="categoryHeader">{{ category.name }}</h3>-->
+<!--    <div class="sect" *ngFor="let subcategory of category.subcats">-->
+<!--      <h5 class="subCatHeader">{{ subcategory.name }}</h5>-->
+<!--      <div class="pbCell" *ngFor="let item of subcategory.items">-->
+<!--        <a target="_blank" href="//{{wowheadUrl}}/{{ item.link }}" class="thumbnail pbThumbnail" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">-->
+<!--          <img [src]="applicationService.getImageSrc(item)">-->
+<!--          <div class="pbLevel" [ngClass]="{opacityOn:showLevel}">{{ item.level }}</div>-->
+<!--          <div class="pbBreed" [ngClass]="{opacityOn:showLevel}">{{ item.breed }}</div>-->
+<!--        </a>-->
+<!--        &lt;!&ndash;        <div class="pbQual" style="{{ qualityToBackground(item) }}"></div>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="clear"></div>-->
+<!--  </ng-container>-->
+<!--</div>-->
+<ng-container *ngIf="battlepetSummary$ | async as battlepetSummary">
+  <app-summary [name]="'Battle Pets'"
+               [categories]="battlepetSummary.categories">
+
+    <ng-template #subcategoryTemplate let-subcategory>
+      <ng-container *ngFor="let item of subcategory.items">
         <a target="_blank" href="//{{wowheadUrl}}/{{ item.link }}" class="thumbnail pbThumbnail" [ngClass]="{borderOn:!item.collected, borderOff:item.collected}">
           <img [src]="applicationService.getImageSrc(item)">
-          <!--          <div class="pbLevel" [ngClass]="{opacityOn:showLevel}">{{ item.level }}</div>-->
-          <!--          <div class="pbBreed" [ngClass]="{opacityOn:showLevel}">{{ item.breed }}</div>-->
+          <div class="pbLevel" [ngClass]="{opacityOn:showLevel}">{{ item.level }}</div>
+          <div class="pbBreed" [ngClass]="{opacityOn:showLevel}">{{ item.breed }}</div>
         </a>
-        <!--        <div class="pbQual" style="{{ qualityToBackground(item) }}"></div>-->
-      </div>
-    </div>
-    <div class="clear"></div>
-  </ng-container>
-</div>
+      </ng-container>
+    </ng-template>
+
+    <ng-template #barTemplate>
+      <app-progressbar [completed]="battlepetSummary.totalCollected" [total]="battlepetSummary.totalPossible"></app-progressbar>
+    </ng-template>
+
+  </app-summary>
+</ng-container>

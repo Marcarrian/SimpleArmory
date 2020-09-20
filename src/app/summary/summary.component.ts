@@ -1,6 +1,7 @@
 import { Component, ContentChild, Inject, Input, OnInit, TemplateRef } from '@angular/core';
 import { WOWHEAD_URL } from '../shared/wowhead-url';
 import { ApplicationService } from '../application/application.service';
+import { Category } from '../model/category';
 
 @Component({
   selector: 'app-summary',
@@ -13,16 +14,13 @@ export class SummaryComponent implements OnInit {
   name: string;
 
   @Input()
-  categories: any[];
-
-  @Input()
-  totalCollected: number;
-
-  @Input()
-  totalPossible: number;
+  categories: Category[];
 
   @ContentChild('subcategoryTemplate', {static: false})
   subcategoryTemplateRef: TemplateRef<any>;
+
+  @ContentChild('barTemplate', {static: false})
+  barTemplateRef: TemplateRef<any>;
 
   constructor(public applicationService: ApplicationService,
               @Inject(WOWHEAD_URL) public wowheadUrl) {

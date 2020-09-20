@@ -1,3 +1,5 @@
+import { MyAchievement } from '../achievements/achievement';
+
 export interface Category {
   id?: string;
   name?: string;
@@ -8,6 +10,7 @@ export interface Subcategory {
   id?: string;
   name?: string;
   items?: Item[];
+  achievements?: MyAchievement[];
 }
 
 export interface Item { // TODO mountItem? nvm any item

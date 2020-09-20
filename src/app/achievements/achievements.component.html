@@ -31,9 +31,8 @@
 
 <ng-container *ngIf="(achievementSummary$ | async)?.supercategories.get(prettySupercategory) as superCategory">
   <app-summary [name]="prettySupercategory"
-               [categories]="superCategory.categories"
-               [totalCollected]="superCategory.completed"
-               [totalPossible]="superCategory.possible">
+               [categories]="superCategory.categories">
+
     <ng-template #subcategoryTemplate let-subcategory>
       <ng-container *ngFor="let achievement of subcategory.achievements">
         <a [target]="anchorTarget"
@@ -43,5 +42,10 @@
           <img [src]="getImageSrc(achievement)"></a>
       </ng-container>
     </ng-template>
+
+    <ng-template #barTemplate>
+      <app-progressbar [completed]="superCategory.completed" [total]="superCategory.possible"></app-progressbar>
+    </ng-template>
+
   </app-summary>
 </ng-container>
