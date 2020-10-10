@@ -1,4 +1,4 @@
-import { Category, Item } from '../model/category';
+import { Category, Item } from '../../shared/model/category';
 
 type Quality = 'POOR' | 'UNCOMMON';
 

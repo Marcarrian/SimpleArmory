@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ProfileService } from './profile/profile.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +7,7 @@ import { ProfileService } from './profile/profile.service';
 })
 export class AppComponent {
 
-  constructor(private profileService: ProfileService) {
+  constructor() {
   }
 }
 

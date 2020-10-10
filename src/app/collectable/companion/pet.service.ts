@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CharacterService } from '../character/character.service';
+import { CharacterService } from '../../shared/character/character.service';
 import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Character } from '../character/character';
-import { armorystatsUrl } from '../util/constants';
+import { armorystatsUrl } from '../../util/constants';
 import { Pet, PetCollection, PetSummary } from './pets';
-import { Profile } from '../profile/profile';
-import { ProfileService } from '../profile/profile.service';
-import BattlepetsJson from '../../assets/data/battlepets.json';
-import { Category, Item, Subcategory } from '../model/category';
+import { ProfileService } from '../../profile/profile.service';
+import PetsJson from '../../../assets/data/pets.json';
+import { Category, Item, Subcategory } from '../../shared/model/category';
+import { Character } from '../../shared/character/character.model';
+import { Profile } from '../../profile/profile.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BattlepetService {
+export class PetService {
 
   // issues/53: Pets that we can ignore warning for because they are battle pets
   private ignoredFoundPets = {
@@ -31,7 +31,7 @@ export class BattlepetService {
 
   }
 
-  public battlepetSummary$(): Observable<PetSummary> {
+  public companionpetSummary$(): Observable<PetSummary> {
     const collectedPetsByCharacter$ = this.characterService.character$
       .pipe(switchMap(character => this.collectedPets$(character)));
     return combineLatest([
@@ -60,7 +60,7 @@ export class BattlepetService {
 
     collectedPets.pets.forEach(petCollected => petSummary.collection.set(+petCollected.species.id, petCollected));
 
-    BattlepetsJson.forEach((category: any) => {
+    PetsJson.forEach((category: any) => {
       const cat: Category = {name: category.name, subcats: []};
       petSummary.categories.push(cat);
 

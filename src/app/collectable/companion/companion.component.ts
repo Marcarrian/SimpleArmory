@@ -2,15 +2,15 @@ import { Component, Inject } from '@angular/core';
 import { PetService } from './pet.service';
 import { Observable } from 'rxjs';
 import { PetSummary } from './pets';
-import { ApplicationService } from '../application/application.service';
-import { WOWHEAD_URL } from '../shared/wowhead-url';
+import { ApplicationService } from '../../application/application.service';
+import { WOWHEAD_URL } from '../../shared/wowhead-url';
 
 @Component({
-  selector: 'app-companions',
-  templateUrl: './companions.component.html',
-  styleUrls: ['./companions.component.scss'],
+  selector: 'app-companion',
+  templateUrl: './companion.component.html',
+  styleUrls: ['./companion.component.scss'],
 })
-export class CompanionsComponent {
+export class CompanionComponent {
 
   companionPetSummary$: Observable<PetSummary>;
 

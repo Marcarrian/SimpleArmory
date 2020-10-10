@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Character } from '../character/character';
 import { combineLatest, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 // tslint:disable-next-line:max-line-length
@@ -8,9 +7,10 @@ import { switchMap } from 'rxjs/operators';
 import { ProfileService } from '../profile/profile.service';
 import AchievementsJson from '../../assets/data/achievements.json';
 import { armorystatsUrl } from '../util/constants';
-import { Profile } from '../profile/profile';
-import { CharacterService } from '../character/character.service';
-import { Subcategory } from '../model/category';
+import { CharacterService } from '../shared/character/character.service';
+import { Subcategory } from '../shared/model/category';
+import { Character } from '../shared/character/character.model';
+import { Profile } from '../profile/profile.model';
 
 @Injectable({
   providedIn: 'root',

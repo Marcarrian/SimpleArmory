@@ -1,8 +1,8 @@
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Character } from './character';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { CharacterService } from './character.service';
+import { Character } from './character.model';
 
 @Injectable({
   providedIn: 'root',

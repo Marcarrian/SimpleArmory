@@ -1,4 +1,4 @@
-import { Subcategory } from '../model/category';
+import { Subcategory } from '../shared/model/category';
 
 export interface AchievementSummary {
   supercategories?: Map<string, AchievementSummarySuperCategory>;

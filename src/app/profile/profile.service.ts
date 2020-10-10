@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { armorystatsUrl } from '../util/constants';
-import { CharacterService } from '../character/character.service';
-import { Profile, ProfileMedia } from './profile';
+import { CharacterService } from '../shared/character/character.service';
+import { Profile, ProfileMedia } from './profile.model';
 
 @Injectable({
   providedIn: 'root',

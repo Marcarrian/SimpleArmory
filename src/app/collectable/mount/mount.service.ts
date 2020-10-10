@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Character } from '../character/character';
 import { HttpClient } from '@angular/common/http';
 import { combineLatest, Observable, of } from 'rxjs';
-import { ProfileService } from '../profile/profile.service';
-import MountsJson from '../../assets/data/mounts.json';
-import { Category, Item, Subcategory } from '../model/category';
-import { armorystatsUrl } from '../util/constants';
+import { ProfileService } from '../../profile/profile.service';
+import MountsJson from '../../../assets/data/mounts.json';
+import { Category, Item, Subcategory } from '../../shared/model/category';
+import { armorystatsUrl } from '../../util/constants';
 import { switchMap } from 'rxjs/operators';
-import { CharacterService } from '../character/character.service';
-import { Profile } from '../profile/profile';
-import { MountCollected, MountCollection, MountSummary } from './mounts';
+import { CharacterService } from '../../shared/character/character.service';
+import { MountCollected, MountCollection, MountSummary } from './mount.model';
+import { Character } from '../../shared/character/character.model';
+import { Profile } from '../../profile/profile.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MountsService {
+export class MountService {
 
   constructor(private http: HttpClient,
               private profileService: ProfileService,

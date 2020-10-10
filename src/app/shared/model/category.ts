@@ -1,4 +1,4 @@
-import { MyAchievement } from '../achievements/achievement';
+import { MyAchievement } from '../../achievements/achievement';
 
 export interface Category {
   id?: string;

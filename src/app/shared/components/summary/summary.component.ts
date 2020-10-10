@@ -1,7 +1,7 @@
 import { Component, ContentChild, Inject, Input, OnInit, TemplateRef } from '@angular/core';
-import { WOWHEAD_URL } from '../shared/wowhead-url';
-import { ApplicationService } from '../application/application.service';
-import { Category } from '../model/category';
+import { WOWHEAD_URL } from '../../wowhead-url';
+import { ApplicationService } from '../../../application/application.service';
+import { Category } from '../../model/category';
 
 @Component({
   selector: 'app-summary',

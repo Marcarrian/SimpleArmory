@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-mounts-planner',
-  templateUrl: './mounts-planner.component.html',
-  styleUrls: ['./mounts-planner.component.scss'],
+  selector: 'app-mount-planner',
+  templateUrl: './mount-planner.component.html',
+  styleUrls: ['./mount-planner.component.scss'],
 })
-export class MountsPlannerComponent {
+export class MountPlannerComponent {
 
   showPlanner = false;
 

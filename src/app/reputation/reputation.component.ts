@@ -6,13 +6,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./reputation.component.scss'],
 })
 export class ReputationComponent {
-  public ReputationCtrl($scope, FactionsService, $window) {
 
-    // Analytics for page
-    $window.ga('send', 'pageview', 'Reputation');
-
-    FactionsService.getFactions().then(function (items) {
-      $scope.items = items;
-    });
+  constructor() {
+    console.log('reputationComponent');
   }
+
+  // public ReputationCtrl($scope, FactionsService, $window) {
+  //
+  //   // Analytics for page
+  //   $window.ga('send', 'pageview', 'Reputation');
+  //
+  //   FactionsService.getFactions().then(function (items) {
+  //     $scope.items = items;
+  //   });
+  // }
 }

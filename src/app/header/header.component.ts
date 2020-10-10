@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
-import { Character } from '../character/character';
-import { Observable } from 'rxjs';
-import { CharacterService } from '../character/character.service';
+import { Component, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { CharacterService } from '../shared/character/character.service';
 import { ProfileService } from '../profile/profile.service';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { Character } from '../shared/character/character.model';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
 
   public isLoggedIn = true;
   isCollapsed = false;
@@ -19,6 +20,7 @@ export class HeaderComponent {
   realm: string;
   public isUsingDarkTheme = true; // TODO implement
   baseUrl = '';
+  destroy$ = new Subject<void>();
 
   constructor(public profileService: ProfileService,
               private characterService: CharacterService,
@@ -27,10 +29,12 @@ export class HeaderComponent {
     console.log(window.location.href);
     this.character$ = characterService.character$;
     // TODO we shouldnt need character as a property of this component since we already have the data as an observable
-    this.character$.subscribe(character => {
-      this.baseUrl = character.region + '/' + character.realm + '/' + character.name;
-      this.character = character;
-    });
+    this.character$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(character => {
+        this.baseUrl = character.region + '/' + character.realm + '/' + character.name;
+        this.character = character;
+      });
   }
 
   getUrl(subSite): string {
@@ -84,5 +88,9 @@ export class HeaderComponent {
     }
 
     return '#';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 }
